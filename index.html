@@ -227,7 +227,7 @@
   .services-tag{font-size:clamp(18px,2.6vw,30px);margin-bottom:4px}
   .services-list{margin-bottom:clamp(16px,3vw,26px)}
   .services-list li{font-size:clamp(11px,1.45vw,16px);padding:2px 0;white-space:nowrap}
-  .services-list li:nth-child(n+4){display:none}
+
   .btn-gradient{padding:clamp(11px,1.5vw,15px) clamp(20px,3vw,34px);font-size:clamp(11px,1.3vw,14px);border-radius:28px;background:linear-gradient(90deg,#ffad08,#171522 92%);color:#fff}
   .contact-icons-row{margin:clamp(13px,2vw,22px) 0}
   .contact-icons-row p{font-size:clamp(11px,1.4vw,15px);margin:6px 0}
@@ -376,8 +376,8 @@
   <!-- FREE GIFT -->
   <div class="gift-section">
     <div class="tag">Special Offer</div>
-    <h2 id="giftHeading">🎁 Free Gift</h2>
-    <p class="muted" id="giftDesc">Sign up for a free consultation now and get an exclusive free gift!</p>
+    <h2 id="giftHeading">1 FREE Gift Per Person 🎁</h2>
+    <p class="muted" id="giftDesc">When You Get a Medical Card!</p>
     <div class="gift-image-wrap">
       <img id="giftImage" src="" alt="Free Gift">
       <input type="file" id="giftPhotoInput" accept="image/*" style="display:none">
@@ -1306,7 +1306,7 @@
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="90">🎁</text>
     </svg>`
   );
-  document.getElementById("giftImage").src = defaultGiftPhoto;
+  document.getElementById("giftImage").src = "gift-image.jpeg";
 
   document.getElementById("giftPhotoInput").addEventListener("change", function (e) {
     const file = e.target.files[0];
@@ -1340,6 +1340,40 @@
     if (!box) return;
     box.style.display = (el && el.checked) ? "block" : "none";
   }
+
+  // Persist owner edits locally so saved content survives reloads and shared links.
+  function savePlannerState() {
+    const state = {
+      owner: { ...OWNER, name: document.getElementById("navBrandTagline")?.textContent || "" },
+      socialLinks: typeof socialLinks !== "undefined" ? socialLinks : null,
+      whyItems: typeof whyItems !== "undefined" ? whyItems : null,
+      coverageOptions: typeof coverageOptions !== "undefined" ? coverageOptions : null,
+      giftHeading: document.getElementById("giftHeading")?.textContent,
+      giftDesc: document.getElementById("giftDesc")?.textContent,
+      whyHeading: document.getElementById("whyHeading")?.textContent,
+      whyIntro: document.getElementById("whyIntro")?.textContent
+    };
+    localStorage.setItem("wealthPlannerState", JSON.stringify(state));
+  }
+  function loadPlannerState() {
+    try {
+      const state = JSON.parse(localStorage.getItem("wealthPlannerState") || "null");
+      if (!state) return;
+      if (state.owner) Object.assign(OWNER, state.owner);
+      if (state.socialLinks && typeof socialLinks !== "undefined") { socialLinks = state.socialLinks; renderSocials(); }
+      if (state.whyItems && typeof whyItems !== "undefined") { whyItems = state.whyItems; renderWhy(); }
+      if (state.coverageOptions && typeof coverageOptions !== "undefined") { coverageOptions = state.coverageOptions; renderCoverageOptions(); }
+      const values = [["giftHeading", state.giftHeading], ["giftDesc", state.giftDesc], ["whyHeading", state.whyHeading], ["whyIntro", state.whyIntro]];
+      values.forEach(([id, value]) => { if (value && document.getElementById(id)) document.getElementById(id).textContent = value; });
+      if (document.getElementById("navBrandTagline")) document.getElementById("navBrandTagline").textContent = state.owner?.name || document.getElementById("navBrandTagline").textContent;
+      if (document.getElementById("aboutEmail")) document.getElementById("aboutEmail").textContent = OWNER.email;
+      if (document.getElementById("contactEmailHome")) document.getElementById("contactEmailHome").textContent = OWNER.email;
+    } catch (error) { console.log("[v0] Could not restore planner edits", error); }
+  }
+  loadPlannerState();
+  document.addEventListener("input", () => clearTimeout(window.__plannerSaveTimer = setTimeout(savePlannerState, 350)));
+  new MutationObserver(() => clearTimeout(window.__plannerSaveTimer = setTimeout(savePlannerState, 350))).observe(document.body, {subtree:true, childList:true, characterData:true});
+  window.addEventListener("beforeunload", savePlannerState);
 
   // Pre-Consultation form -> WhatsApp
   document.getElementById("preConsultForm").addEventListener("submit", function (e) {
