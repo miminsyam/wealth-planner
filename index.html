@@ -9,7 +9,7 @@
   *{box-sizing:border-box}
   html{background:#000}
   body{margin:0;font-family:'Helvetica Neue',Arial,Helvetica,sans-serif;color:var(--white);background:#000;line-height:1.6}
-  .app-shell{max-width:480px;margin:0 auto;background:var(--navy);min-height:100vh;position:relative;overflow-x:hidden;box-shadow:0 0 60px rgba(0,0,0,.6)}
+  .app-shell{width:100%;background:var(--navy);min-height:100vh;position:relative;overflow-x:hidden}
   nav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.97);border-bottom:1px solid rgba(212,175,55,.25);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 6%;flex-wrap:wrap}
   .brand{font-weight:800;letter-spacing:2px;font-size:15px}.brand span{color:var(--gold)}
   .brand small{display:block;font-weight:400;letter-spacing:.5px;font-size:10.5px;color:var(--muted);text-transform:none}
@@ -32,8 +32,14 @@
   .buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
   .back-link{display:inline-block;margin-bottom:20px;color:var(--gold);text-decoration:none;font-weight:700;cursor:pointer}
 
-  .settings-fab{width:40px;height:36px;flex-shrink:0;border-radius:2px;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.4);color:var(--gold);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .settings-fab{width:40px;height:36px;flex-shrink:0;border-radius:2px;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.4);color:var(--gold);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .settings-fab:hover{background:rgba(212,175,55,.15)}
+  .nav-toggle{display:none;width:40px;height:36px;flex-shrink:0;border-radius:2px;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.4);color:var(--gold);font-size:18px;cursor:pointer;align-items:center;justify-content:center}
+  .nav-toggle:hover{background:rgba(212,175,55,.15)}
+  .mobile-nav{display:none;flex-direction:column;background:rgba(0,0,0,.98);border-bottom:1px solid rgba(212,175,55,.25);padding:8px 6%}
+  .mobile-nav.active{display:flex}
+  .mobile-nav a{color:white;text-decoration:none;padding:13px 0;font-size:14px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
+  .mobile-nav a:last-child{border-bottom:none}
 
   /* HERO (reference-style: tagline, huge word, subtitle, CTA) */
   .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;text-align:center;background:#000;overflow:hidden}
@@ -49,7 +55,7 @@
   .hero .buttons{justify-content:center}
 
   /* ABOUT ME / PROFILE POSTER */
-  .about-grid{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1.15fr;gap:50px;align-items:center;padding:80px 6%;background:#000}
+  .about-grid{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1.15fr;gap:50px;align-items:center;padding:80px 6%;background:#000;max-width:1100px;margin:0 auto}
   .about-grid > *{position:relative;z-index:1}
   .hex-bg-decor{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
   .about-grid .divider{width:40px;height:3px;background:var(--gold);margin-bottom:16px}
@@ -84,7 +90,7 @@
   .help-bar .price{color:#ffe27a;font-weight:800;font-size:15px}
   .help-bar-cta{text-align:center;margin:16px 0 6px}
   /* CONTACT TEASER */
-  .contact-teaser{background:#000;padding:80px 6%;display:grid;grid-template-columns:1fr 1.2fr;gap:50px}
+  .contact-teaser{background:#000;padding:80px 6%;display:grid;grid-template-columns:1fr 1.2fr;gap:50px;max-width:1100px;margin:0 auto}
   .contact-teaser .divider{width:40px;height:3px;background:var(--gold);margin-bottom:16px}
   .contact-info p{font-size:14px;color:var(--muted);margin:4px 0}
   .contact-social{display:flex;gap:14px;margin-top:20px}
@@ -94,7 +100,29 @@
   .contact-form textarea{min-height:80px;resize:vertical}
   .btn-submit{display:inline-block;padding:14px 34px;background:var(--gold);color:#000;font-weight:800;font-style:italic;border:none;border-radius:2px;cursor:pointer;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
 
-  @media(max-width:800px){.links{display:none}.contact-teaser{grid-template-columns:1fr}.about-grid{grid-template-columns:1.1fr 1fr;gap:14px;padding:50px 4%}.about-heading{font-size:24px}.about-tagline{font-size:15px}.hex-frame{max-width:190px}.services-list li,.contact-icons-row p{font-size:12.5px}}
+  @media(max-width:800px){.links{display:none}.nav-toggle{display:flex}.contact-teaser{grid-template-columns:1fr}.about-grid{grid-template-columns:1.1fr 1fr;gap:14px;padding:50px 4%}.about-heading{font-size:24px}.about-tagline{font-size:15px}.hex-frame{max-width:190px}.services-list li,.contact-icons-row p{font-size:12.5px}}
+
+  /* DESKTOP / WIDE-SCREEN ENHANCEMENT (PC, tablets, phone landscape) */
+  @media(min-width:801px){
+    nav{padding:18px 4%}
+    .links a{margin-left:26px;font-size:13.5px}
+    h1{font-size:44px}
+    h2{font-size:34px}
+    .hero{min-height:75vh}
+    .hero-inner{max-width:900px}
+    .hero-word{font-size:96px;letter-spacing:6px}
+    .hero-sub{font-size:17px;max-width:640px;margin-left:auto;margin-right:auto}
+    .about-grid{gap:70px;padding:110px 6%}
+    .about-heading{font-size:46px}
+    .about-tagline{font-size:28px}
+    .services-tag{font-size:23px}
+    .services-list li,.contact-icons-row p{font-size:15px}
+    .hex-frame{max-width:420px}
+    .help-bar h3{font-size:22px}
+    .help-bar p{font-size:15px}
+    .why-block h3{font-size:24px}
+    .why-block p{font-size:16px}
+  }
 
   .profile{position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(216,177,90,.35);border-radius:24px;padding:22px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.25)}
   .profile-photo-wrap{position:relative;width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#173657}
@@ -192,12 +220,25 @@
     <a onclick="showSection('why')">Why PruBSN</a>
     <a onclick="showSection('steps')">How It Works</a>
     <a onclick="showSection('apply')">Apply</a>
-    <a onclick="showSection('testimonials')">Testimonials</a>
+    <a onclick="showSection('testimonials')">Feedback</a>
     <a onclick="showSection('faq')">FAQ</a>
     <a href="https://wa.me/60143966641" target="_blank" style="border:1px solid var(--gold);padding:8px 14px;color:var(--gold)">WhatsApp</a>
   </div>
-  <button class="settings-fab" title="Owner Settings" onclick="openSettingsHub()">☰</button>
+  <button class="nav-toggle" title="Menu" onclick="toggleMobileNav()">☰</button>
+  <button class="settings-fab" title="Owner Settings" onclick="openSettingsHub()">⚙️</button>
 </nav>
+
+<!-- MOBILE NAV DROPDOWN (visitor navigation, shown on small screens) -->
+<div class="mobile-nav" id="mobileNav">
+  <a onclick="showSection('home');closeMobileNav()">Home</a>
+  <a onclick="showSection('plans');closeMobileNav()">Plans</a>
+  <a onclick="showSection('why');closeMobileNav()">Why PruBSN</a>
+  <a onclick="showSection('steps');closeMobileNav()">How It Works</a>
+  <a onclick="showSection('apply');closeMobileNav()">Apply</a>
+  <a onclick="showSection('testimonials');closeMobileNav()">Feedback</a>
+  <a onclick="showSection('faq');closeMobileNav()">FAQ</a>
+  <a href="https://wa.me/60143966641" target="_blank" style="color:var(--gold)">WhatsApp</a>
+</div>
 
 <section class="page-section active" id="home">
 
@@ -246,9 +287,14 @@
 
       <div class="services-tag">Our Services</div>
       <ul class="services-list">
-        <li>Medical card</li>
-        <li>Takaful mission dan vision</li>
-        <li>Warisan gold (hibah)</li>
+        <li>Medical Card</li>
+        <li>Medical Card with Investments</li>
+        <li>Hibah With Badal Hajj and Khairat Kematian</li>
+        <li>Life Protection</li>
+        <li>Accident Coverage</li>
+        <li>Investment Plans</li>
+        <li>Critical Illness Only Plan</li>
+        <li>Waiver Upon Critical Illness</li>
       </ul>
 
       <a class="btn-gradient" href="https://wa.me/60143966641" target="_blank">Contact Us</a>
@@ -465,7 +511,7 @@
 <!-- TESTIMONIALS -->
 <section class="section light page-section" id="testimonials">
   <a class="back-link" onclick="showSection('home')" style="color:#a97e28">&larr; Back</a>
-  <div class="tag">Testimonials</div>
+  <div class="tag">Feedback</div>
   <h2>What Do They <span style="color:#a97e28">Say?</span></h2>
   <p class="muted">Real experiences from customers we've helped</p>
 
@@ -571,7 +617,7 @@
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditWhy()">🩺 Edit "Why PruBSN" Section</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditPlans()">📋 Edit Featured Plans</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditAllPlans()">🗂️ Edit Full Plans Page</button>
-      <button class="btn primary" onclick="closeModal('settingsHubModal');openEditTestimonials()">💬 Edit Testimonials</button>
+      <button class="btn primary" onclick="closeModal('settingsHubModal');openEditTestimonials()">💬 Edit Feedback</button>
       <button class="btn-outline" onclick="closeModal('settingsHubModal')">Close</button>
     </div>
   </div>
@@ -660,10 +706,10 @@
 <!-- EDIT TESTIMONIALS MODAL -->
 <div class="modal-overlay" id="testimonialsModal">
   <div class="modal-box">
-    <h3>Edit Testimonials</h3>
-    <p class="muted" style="font-size:13px;margin-top:-8px">Add real customer testimonials as they come in. Leave empty if you don't have any yet.</p>
+    <h3>Edit Feedback</h3>
+    <p class="muted" style="font-size:13px;margin-top:-8px">Add real customer feedback as it comes in. Leave empty if you don't have any yet.</p>
     <div id="testimonialsEditList"></div>
-    <button type="button" class="btn-outline" style="width:100%;margin-top:6px" onclick="addTestimonialRow()">➕ Add New Testimonial</button>
+    <button type="button" class="btn-outline" style="width:100%;margin-top:6px" onclick="addTestimonialRow()">➕ Add New Feedback</button>
     <div class="modal-actions">
       <button class="btn-outline" onclick="closeModal('testimonialsModal')">Cancel</button>
       <button class="btn primary" onclick="saveTestimonials()">Save</button>
@@ -694,6 +740,14 @@
     document.querySelectorAll(".page-section").forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
     window.scrollTo(0, 0);
+  }
+
+  // Mobile visitor navigation menu (separate from Owner Settings)
+  function toggleMobileNav() {
+    document.getElementById("mobileNav").classList.toggle("active");
+  }
+  function closeMobileNav() {
+    document.getElementById("mobileNav").classList.remove("active");
   }
 
   // Profile photo upload (preview only, in-page)
@@ -1048,7 +1102,7 @@
   function renderTestimonials() {
     const container = document.getElementById("testiGridContainer");
     if (testimonials.length === 0) {
-      container.innerHTML = `<p class="muted" style="grid-column:1/-1;text-align:center">No testimonials yet — check back soon!</p>`;
+      container.innerHTML = `<p class="muted" style="grid-column:1/-1;text-align:center">No feedback yet — check back soon!</p>`;
       return;
     }
     container.innerHTML = testimonials.map(t => {
@@ -1071,8 +1125,8 @@
         <div class="modal-field"><label>Customer Name</label><input type="text" class="tm-name" value="${escHtml(item.name)}" placeholder="e.g. Nurul Ain, 32"></div>
         <div class="modal-field"><label>Role / Location</label><input type="text" class="tm-role" value="${escHtml(item.role)}" placeholder="e.g. Teacher · Selangor"></div>
         <div class="modal-field"><label>Rating</label><input type="text" class="tm-rating" value="${escHtml(item.rating || '★★★★★')}" placeholder="★★★★★"></div>
-        <div class="modal-field"><label>Testimonial Quote</label><textarea class="tm-quote">${escHtml(item.quote)}</textarea></div>
-        <button type="button" class="btn-outline" onclick="this.closest('.plan-edit-row').remove()">🗑️ Remove This Testimonial</button>
+        <div class="modal-field"><label>Feedback</label><textarea class="tm-quote">${escHtml(item.quote)}</textarea></div>
+        <button type="button" class="btn-outline" onclick="this.closest('.plan-edit-row').remove()">🗑️ Remove This Feedback</button>
       </div>
     `;
   }
@@ -1109,7 +1163,7 @@
     const rating = document.getElementById("tfRating").value;
     const message = document.getElementById("tfMessage").value.trim();
 
-    let text = "Assalamualaikum, I'd like to share my feedback/testimonial:\n\n";
+    let text = "Assalamualaikum, I'd like to share my feedback:\n\n";
     text += `*Name:* ${name}\n`;
     if (role) text += `*Occupation/Location:* ${role}\n`;
     text += `*Rating:* ${rating}\n`;
