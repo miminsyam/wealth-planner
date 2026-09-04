@@ -89,6 +89,11 @@
   .help-bar p{color:rgba(255,255,255,.85);font-size:14px;max-width:720px;margin:0 0 14px}
   .help-bar .price{color:#ffe27a;font-weight:800;font-size:15px}
   .help-bar-cta{text-align:center;margin:16px 0 6px}
+
+  /* FREE GIFT */
+  .gift-section{background:linear-gradient(180deg,#000,#0c0c0c);padding:70px 6%;text-align:center}
+  .gift-image-wrap{width:100%;max-width:320px;aspect-ratio:1/1;margin:24px auto 0;border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#111;display:flex;align-items:center;justify-content:center}
+  .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
   /* CONTACT TEASER */
   .contact-teaser{background:#000;padding:80px 6%;display:grid;grid-template-columns:1fr 1.2fr;gap:50px;max-width:1100px;margin:0 auto}
   .contact-teaser .divider{width:40px;height:3px;background:var(--gold);margin-bottom:16px}
@@ -289,7 +294,7 @@
       <ul class="services-list">
         <li>Medical Card</li>
         <li>Medical Card with Investments</li>
-        <li>Hibah With Badal Hajj and Khairat Kematian</li>
+        <li>Hibah With Badal Haji and Khairat Kematian</li>
         <li>Life Protection</li>
         <li>Accident Coverage</li>
         <li>Investment Plans</li>
@@ -327,6 +332,20 @@
 
     <div class="buttons" style="justify-content:center;margin-top:34px">
       <a class="btn secondary" onclick="showSection('plans')">More Services</a>
+    </div>
+  </div>
+
+  <!-- FREE GIFT -->
+  <div class="gift-section">
+    <div class="tag">Special Offer</div>
+    <h2 id="giftHeading">🎁 Free Gift</h2>
+    <p class="muted" id="giftDesc">Sign up for a free consultation now and get an exclusive free gift!</p>
+    <div class="gift-image-wrap">
+      <img id="giftImage" src="" alt="Free Gift">
+      <input type="file" id="giftPhotoInput" accept="image/*" style="display:none">
+    </div>
+    <div class="buttons" style="justify-content:center;margin-top:26px">
+      <a class="btn primary" onclick="showSection('apply')">Claim Your Free Gift</a>
     </div>
   </div>
 
@@ -476,18 +495,7 @@
 
       <div class="field">
         <label>Coverage You're Looking For <span class="req">*</span></label>
-        <div class="checkbox-grid" id="coverageGroup">
-          <label class="checkbox-item"><input type="checkbox" value="Medical Card"> Medical Card</label>
-          <label class="checkbox-item"><input type="checkbox" value="Critical Illness"> Critical Illness</label>
-          <label class="checkbox-item"><input type="checkbox" value="Life Protection"> Life Protection</label>
-          <label class="checkbox-item"><input type="checkbox" value="Income Protection"> Income Protection</label>
-          <label class="checkbox-item"><input type="checkbox" value="Lady Plan"> Lady Plan</label>
-          <label class="checkbox-item"><input type="checkbox" value="Prebirth / Child" onchange="togglePrebirthFields()"> Prebirth / Child</label>
-          <label class="checkbox-item"><input type="checkbox" value="Savings / Investment"> Savings / Investment</label>
-          <label class="checkbox-item"><input type="checkbox" value="Education Plan"> Education Plan</label>
-          <label class="checkbox-item"><input type="checkbox" value="Keyman Plan"> Keyman Plan</label>
-          <label class="checkbox-item"><input type="checkbox" value="MLTT / Loan"> MLTT / Loan</label>
-        </div>
+        <div class="checkbox-grid" id="coverageGroup"></div>
       </div>
 
       <div class="conditional-box" id="prebirthFields">
@@ -497,7 +505,7 @@
           <input type="text" id="pregnancyWeeks" placeholder="e.g. 14 weeks">
         </div>
         <div class="field">
-          <label>Expected Due Delivery (EDD) Date <span class="req">*</span></label>
+          <label>Estimated Due Date (EDD) <span class="req">*</span></label>
           <input type="date" id="eddDate">
         </div>
       </div>
@@ -618,6 +626,8 @@
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditPlans()">📋 Edit Featured Plans</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditAllPlans()">🗂️ Edit Full Plans Page</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditTestimonials()">💬 Edit Feedback</button>
+      <button class="btn primary" onclick="closeModal('settingsHubModal');openEditCoverage()">☑️ Edit Coverage Options</button>
+      <button class="btn primary" onclick="closeModal('settingsHubModal');openEditGift()">🎁 Edit Free Gift</button>
       <button class="btn-outline" onclick="closeModal('settingsHubModal')">Close</button>
     </div>
   </div>
@@ -713,6 +723,37 @@
     <div class="modal-actions">
       <button class="btn-outline" onclick="closeModal('testimonialsModal')">Cancel</button>
       <button class="btn primary" onclick="saveTestimonials()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT COVERAGE OPTIONS MODAL -->
+<div class="modal-overlay" id="coverageModal">
+  <div class="modal-box">
+    <h3>Edit Coverage Options</h3>
+    <p class="muted" style="font-size:13px;margin-top:-8px">These are the checkbox options shown under "Coverage You're Looking For" in the Pre-Consultation form.</p>
+    <div id="coverageEditList"></div>
+    <button type="button" class="btn-outline" style="width:100%;margin-top:6px" onclick="addCoverageRow()">➕ Add New Option</button>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('coverageModal')">Cancel</button>
+      <button class="btn primary" onclick="saveCoverage()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT FREE GIFT MODAL -->
+<div class="modal-overlay" id="giftModal">
+  <div class="modal-box">
+    <h3>Edit Free Gift</h3>
+    <div class="modal-field"><label>Heading</label><input type="text" id="edit_giftHeading"></div>
+    <div class="modal-field"><label>Description</label><textarea id="edit_giftDesc"></textarea></div>
+    <div class="modal-field">
+      <label>Gift Photo</label>
+      <button class="btn-outline" type="button" onclick="document.getElementById('giftPhotoInput').click()">📷 Upload / Change Photo</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('giftModal')">Cancel</button>
+      <button class="btn primary" onclick="saveGift()">Save</button>
     </div>
   </div>
 </div>
@@ -906,8 +947,8 @@
   // ===== Why PruBSN Section — editable, add/remove items =====
   let whyItems = [
     { title: "Medical Card", desc: "Anugerah Max is the most common favourite and most affordable Medical card with a range of price from 120 - 250 depending on personal preference." },
-    { title: "Warisan Gold - Hibah", desc: "Warisan Gold is a HIBAH, in which grant your appointed nomination to receive a lump sum cash gift depending on your preferred minimum cash gift. Lowest gift starting from RM350,000 with an average monthly contribution of RM140 depending on risk factor of person taking it. HIBAH is not part of Faraid and no law can bypass HIBAH. HIBAH also comes with other side benefit for the donor in which he/she will be granted a Badal Hajj and Khairat Kematian payment of RM3k." },
-    { title: "Takaful", desc: "TAKAFUL is a Shariah (HALAL) Compliant Insurance. While theres two type of Conventional Insurance which is Life Insurance and General Insurance, theres also Life TAKAFUL and General TAKAFUL. Here I am providing only Life TAKAFUL. That in fact can be fully called as TAKAFUL Life Insurance." }
+    { title: "Warisan Gold - Hibah", desc: "Warisan Gold is a HIBAH, in which grant your appointed nomination to receive a lump sum cash gift depending on your preferred minimum cash gift. Lowest gift starting from RM350,000 with an average monthly contribution of RM140 depending on risk factor of person taking it. HIBAH is not part of Faraid and no law can bypass HIBAH. HIBAH also comes with other side benefit for the donor in which he/she will be granted a Badal Haji and Khairat Kematian payment of RM3k." },
+    { title: "Takaful", desc: "TAKAFUL is a Shariah (HALAL) Compliant Insurance. While there are two types of Conventional Insurance — Life Insurance and General Insurance — there are also Life TAKAFUL and General TAKAFUL. Here I am providing only Life TAKAFUL, which can be fully described as TAKAFUL Life Insurance." }
   ];
   renderWhy();
 
@@ -961,7 +1002,7 @@
   let featuredPlans = [
     { title: "Medical Card", desc: "Anugerah Max is the most common favourite and most affordable Medical card with a range of price.", price: "From RM120 - RM250" },
     { title: "Warisan Gold - Hibah", desc: "Warisan Gold is a HIBAH, in which grant your appointed nomination to receive a lump sum cash gift depending on your preferred minimum cash gift. Lowest gift starting from RM350,000 with an average monthly contribution of RM140 depending on risk factor of person taking it.", price: "From RM150" },
-    { title: "Takaful", desc: "TAKAFUL is a Shariah (HALAL) Compliant Insurance. While theres two type of Conventional Insurance which is Life Insurance and General Insurance, theres also Life TAKAFUL and General TAKAFUL. Here I am providing only Life TAKAFUL. That in fact can be fully called as TAKAFUL Life Insurance.", price: "From RM00" }
+    { title: "Takaful", desc: "TAKAFUL is a Shariah (HALAL) Compliant Insurance. While there are two types of Conventional Insurance — Life Insurance and General Insurance — there are also Life TAKAFUL and General TAKAFUL. Here I am providing only Life TAKAFUL, which can be fully described as TAKAFUL Life Insurance.", price: "From RM00" }
   ];
   renderPlans();
 
@@ -1174,14 +1215,92 @@
 
   function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
+  // ===== Coverage Options (Pre-Consultation checkboxes) — editable, add/remove =====
+  let coverageOptions = [
+    "Medical Card", "Critical Illness", "Life Protection", "Income Protection",
+    "Lady Plan", "Prebirth / Child", "Savings / Investment", "Education Plan",
+    "Keyman Plan", "MLTT / Loan"
+  ];
+  renderCoverageOptions();
+
+  function renderCoverageOptions() {
+    const container = document.getElementById("coverageGroup");
+    container.innerHTML = coverageOptions.map(opt => `
+      <label class="checkbox-item"><input type="checkbox" value="${escHtml(opt)}"> ${escHtml(opt)}</label>
+    `).join("");
+    container.addEventListener("change", togglePrebirthFields);
+  }
+
+  function coverageRowHtml(value) {
+    return `
+      <div class="plan-edit-row" style="display:flex;align-items:center;gap:10px">
+        <input type="text" class="cv-option" value="${escHtml(value || "")}" style="flex:1;padding:10px 11px;border-radius:10px;border:1px solid var(--field-border);background:var(--field);color:var(--white);font-family:inherit;font-size:13.5px">
+        <button type="button" class="btn-outline" onclick="this.closest('.plan-edit-row').remove()">🗑️</button>
+      </div>
+    `;
+  }
+
+  function addCoverageRow() {
+    document.getElementById("coverageEditList").insertAdjacentHTML("beforeend", coverageRowHtml());
+  }
+
+  function openEditCoverage() {
+    document.getElementById("coverageEditList").innerHTML = coverageOptions.map(opt => coverageRowHtml(opt)).join("");
+    document.getElementById("coverageModal").classList.add("active");
+  }
+
+  function saveCoverage() {
+    const rows = document.querySelectorAll("#coverageEditList .cv-option");
+    const newOptions = [];
+    rows.forEach(input => {
+      const val = input.value.trim();
+      if (val) newOptions.push(val);
+    });
+    coverageOptions = newOptions;
+    renderCoverageOptions();
+    closeModal("coverageModal");
+  }
+
+  // ===== Free Gift — editable heading, description, and photo =====
+  const defaultGiftPhoto = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+      <rect width="100%" height="100%" fill="#111"/>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="90">🎁</text>
+    </svg>`
+  );
+  document.getElementById("giftImage").src = defaultGiftPhoto;
+
+  document.getElementById("giftPhotoInput").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => document.getElementById("giftImage").src = evt.target.result;
+    reader.readAsDataURL(file);
+  });
+
+  function openEditGift() {
+    document.getElementById("edit_giftHeading").value = document.getElementById("giftHeading").textContent;
+    document.getElementById("edit_giftDesc").value = document.getElementById("giftDesc").textContent;
+    document.getElementById("giftModal").classList.add("active");
+  }
+  function saveGift() {
+    const heading = document.getElementById("edit_giftHeading").value.trim();
+    const desc = document.getElementById("edit_giftDesc").value.trim();
+    if (heading) document.getElementById("giftHeading").textContent = heading;
+    if (desc) document.getElementById("giftDesc").textContent = desc;
+    closeModal("giftModal");
+  }
+
   // Conditional fields
   function toggleReferralFields() {
     const val = document.getElementById("referralSource").value;
     document.getElementById("referralFields").style.display = val.includes("Referral") ? "block" : "none";
   }
   function togglePrebirthFields() {
-    const checked = document.querySelector('#coverageGroup input[value="Prebirth / Child"]').checked;
-    document.getElementById("prebirthFields").style.display = checked ? "block" : "none";
+    const el = document.querySelector('#coverageGroup input[value="Prebirth / Child"]');
+    const box = document.getElementById("prebirthFields");
+    if (!box) return;
+    box.style.display = (el && el.checked) ? "block" : "none";
   }
 
   // Pre-Consultation form -> WhatsApp
