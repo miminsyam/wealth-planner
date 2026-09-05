@@ -76,9 +76,7 @@
   .contact-icons-row{margin:18px 0}
   .contact-icons-row p{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;margin:8px 0}
   .contact-icons-row .ic-circle{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .socials{display:flex;gap:10px;flex-wrap:wrap}
-  .socials a{color:var(--gold);font-size:12.5px;text-decoration:none;border:1px solid var(--field-border);padding:6px 14px;border-radius:20px}
-  .socials a:hover{background:rgba(212,175,55,.12)}
+  .socials{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
   .hex-frame{position:relative;width:100%;max-width:814px;aspect-ratio:1/1.05;margin:0 auto}
   .hex-frame .hex-border{position:absolute;inset:0;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);background:linear-gradient(135deg,var(--gold),#7a4a12)}
   .hex-frame .hex-inner{position:absolute;inset:3px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);overflow:hidden;background:#fff}
@@ -309,7 +307,7 @@
 
       <div class="contact-icons-row">
         <p><span class="ic-circle"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg></span> <span id="aboutPhone">014 396 6641</span></p>
-        <p><span class="ic-circle"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"/></svg></span> <span id="aboutEmail">hardyvimalaya@gmail.com</span></p>
+        <p><span class="ic-circle"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"/></svg></span> <a id="aboutEmail" href="mailto:hardyvimalaya@gmail.com" style="color:inherit;text-decoration:none">hardyvimalaya@gmail.com</a></p>
       </div>
 
       <a class="btn-gradient" href="https://pruservices.prubsn.com.my/app/onboarding/welcome" target="_blank">Prudential BSN</a>
@@ -360,7 +358,7 @@
       <p id="contactAddressHome">No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan</p>
       <p>Tel: <span id="profileRoleSmall">014-396 6641</span></p>
       <p>Fax: +603 8733 1317</p>
-      <p id="contactEmailHome">hardyvimalaya@gmail.com</p>
+      <p><a id="contactEmailHome" href="mailto:hardyvimalaya@gmail.com" style="color:inherit;text-decoration:none">hardyvimalaya@gmail.com</a></p>
     </div>
   </div>
 
@@ -585,7 +583,7 @@
   <p class="muted" id="contactRole">Wealth Planner &middot; Muqmeen Group &middot; PruBSN Takaful</p>
   <p class="muted" id="contactAddress" style="font-size:13px;max-width:420px;margin:10px auto">No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan</p>
   <p class="muted" style="font-size:13px">
-    <span id="contactEmail">hardyvimalaya@gmail.com</span> &middot;
+    <a id="contactEmail" href="mailto:hardyvimalaya@gmail.com" style="color:inherit;text-decoration:none">hardyvimalaya@gmail.com</a> &middot;
     <span id="contactOfficePhone">Office: 014 396 6641</span> &middot;
     <a id="contactWebsite" href="https://www.muqmeen.com.my" target="_blank" style="color:var(--gold)">www.muqmeen.com.my</a>
   </p>
@@ -771,36 +769,97 @@
     address: "No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan"
   };
 
-  // ===== Persistent storage (localStorage) — edits survive closing/reopening the page =====
+  // ===== Persistent storage =====
+  // Local cache (instant, per-browser) + Firebase Firestore sync (shared across everyone, every device)
   const STORAGE_KEY = "wealthPlannerSiteData_v1";
+
   function loadSiteData() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : {};
     } catch (e) { return {}; }
   }
+  function collectSiteData() {
+    return {
+      owner: OWNER,
+      profileName: document.getElementById("navBrandTagline").textContent,
+      slogan: document.getElementById("slogan").textContent,
+      profilePhoto: document.getElementById("profileImage").src,
+      socialLinks: socialLinks,
+      whyHeading: document.getElementById("whyHeading").textContent,
+      whyIntro: document.getElementById("whyIntro").textContent,
+      whyItems: whyItems,
+      featuredPlans: featuredPlans,
+      allPlans: allPlans,
+      testimonials: testimonials,
+      coverageOptions: coverageOptions,
+      giftHeading: document.getElementById("giftHeading").textContent,
+      giftDesc: document.getElementById("giftDesc").textContent,
+      giftPhoto: document.getElementById("giftImage").src
+    };
+  }
   function saveSiteData() {
+    const data = collectSiteData();
     try {
-      const data = {
-        owner: OWNER,
-        profileName: document.getElementById("navBrandTagline").textContent,
-        slogan: document.getElementById("slogan").textContent,
-        profilePhoto: document.getElementById("profileImage").src,
-        socialLinks: socialLinks,
-        whyHeading: document.getElementById("whyHeading").textContent,
-        whyIntro: document.getElementById("whyIntro").textContent,
-        whyItems: whyItems,
-        featuredPlans: featuredPlans,
-        allPlans: allPlans,
-        testimonials: testimonials,
-        coverageOptions: coverageOptions,
-        giftHeading: document.getElementById("giftHeading").textContent,
-        giftDesc: document.getElementById("giftDesc").textContent,
-        giftPhoto: document.getElementById("giftImage").src
-      };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) { /* storage full or unavailable — fail silently */ }
+
+    // Push to Firestore so every visitor/device sees the same content
+    if (window.firebaseSaveData) {
+      window.firebaseSaveData(data);
+    }
   }
+
+  // Apply a full data object (from local cache OR from Firestore) to the page
+  function applySiteData(data) {
+    if (!data) return;
+    if (data.owner) Object.assign(OWNER, data.owner);
+    if (data.profileName) {
+      document.getElementById("navBrandTagline").textContent = data.profileName;
+      document.getElementById("contactName").textContent = data.profileName;
+      document.getElementById("footerCopyright").textContent = `© 2025 ${data.profileName} · ${OWNER.company} · PruBSN Takaful · All rights reserved`;
+    }
+    if (data.slogan) document.getElementById("slogan").textContent = data.slogan;
+    if (data.profilePhoto) document.getElementById("profileImage").src = data.profilePhoto;
+    if (data.giftPhoto) document.getElementById("giftImage").src = data.giftPhoto;
+    if (data.giftHeading) document.getElementById("giftHeading").textContent = data.giftHeading;
+    if (data.giftDesc) document.getElementById("giftDesc").textContent = data.giftDesc;
+    if (data.whyHeading) document.getElementById("whyHeading").textContent = data.whyHeading;
+    if (data.whyIntro) document.getElementById("whyIntro").textContent = data.whyIntro;
+
+    document.getElementById("contactRole").textContent = `Wealth Planner · ${OWNER.company} · PruBSN Takaful`;
+    setEmailLinks(OWNER.email);
+    document.getElementById("contactOfficePhone").textContent = `Office: ${OWNER.officePhone}`;
+    const w = document.getElementById("contactWebsite");
+    if (w) { w.href = OWNER.website; w.textContent = OWNER.website.replace(/^https?:\/\//, ""); }
+    document.getElementById("contactAddress").textContent = OWNER.address;
+    document.getElementById("contactAddressHome").textContent = OWNER.address;
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(a => {
+      a.href = a.href.replace(/wa\.me\/\d+/, `wa.me/${OWNER.whatsappNumber}`);
+    });
+    const roleSmall = document.getElementById("profileRoleSmall");
+    if (roleSmall) roleSmall.textContent = OWNER.whatsappNumber;
+
+    if (data.socialLinks) { socialLinks = data.socialLinks; renderSocials(); }
+    if (data.whyItems) { whyItems = data.whyItems; renderWhy(); }
+    if (data.featuredPlans) { featuredPlans = data.featuredPlans; renderPlans(); }
+    if (data.allPlans) { allPlans = data.allPlans; renderAllPlans(); }
+    if (data.testimonials) { testimonials = data.testimonials; renderTestimonials(); }
+    if (data.coverageOptions) { coverageOptions = data.coverageOptions; renderCoverageOptions(); }
+  }
+
+  // Called by the Firebase module script once it has loaded data from Firestore
+  window.syncFromFirebase = async function () {
+    if (!window.firebaseLoadData) return;
+    try {
+      const data = await window.firebaseLoadData();
+      if (data) {
+        applySiteData(data);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+      }
+    } catch (e) { /* offline or database unreachable — local cache stays in use */ }
+  };
+
   const SITE_DATA = loadSiteData();
   if (SITE_DATA.owner) Object.assign(OWNER, SITE_DATA.owner);
 
@@ -823,9 +882,7 @@
     if (SITE_DATA.slogan) document.getElementById("slogan").textContent = SITE_DATA.slogan;
     document.getElementById("mgCompanyName").textContent = OWNER.company;
     document.getElementById("contactRole").textContent = `Wealth Planner · ${OWNER.company} · PruBSN Takaful`;
-    document.getElementById("contactEmail").textContent = OWNER.email;
-    document.getElementById("aboutEmail").textContent = OWNER.email;
-    document.getElementById("contactEmailHome").textContent = OWNER.email;
+    setEmailLinks(OWNER.email);
     document.getElementById("contactOfficePhone").textContent = `Office: ${OWNER.officePhone}`;
     const w = document.getElementById("contactWebsite");
     w.href = OWNER.website;
@@ -921,9 +978,7 @@
     }
     if (email) {
       OWNER.email = email;
-      document.getElementById("contactEmail").textContent = email;
-      document.getElementById("aboutEmail").textContent = email;
-      document.getElementById("contactEmailHome").textContent = email;
+      setEmailLinks(email);
     }
     if (officePhone) { OWNER.officePhone = officePhone; document.getElementById("contactOfficePhone").textContent = `Office: ${officePhone}`; }
     if (website) { OWNER.website = website; const w = document.getElementById("contactWebsite"); w.href = website; w.textContent = website.replace(/^https?:\/\//, ""); }
@@ -946,11 +1001,33 @@
   ];
   renderSocials();
 
+  // Icon set for social/link buttons — matched by platform name (falls back to a generic link icon)
+  function socialIconSvg(name) {
+    const key = (name || "").toLowerCase();
+    const icons = {
+      tiktok: '<svg viewBox="0 0 24 24"><path d="M16.6 5.82c-.9-.87-1.4-2.06-1.4-3.32h-3.02v13.44c0 1.62-1.32 2.94-2.94 2.94a2.94 2.94 0 0 1 0-5.88c.29 0 .57.04.83.12V9.98a5.94 5.94 0 0 0-.83-.06 5.96 5.96 0 1 0 5.96 5.96V9.4a8.9 8.9 0 0 0 5.2 1.67V8.05c-1.4 0-2.7-.45-3.8-1.23-.68-.44-1.3-.98-1.9-1.6z"/></svg>',
+      facebook: '<svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>',
+      instagram: '<svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.89 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77A4.9 4.9 0 0 1 5.45 2.53c.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.25A3.25 3.25 0 1 1 12 8.75a3.25 3.25 0 0 1 0 6.5zm5.2-8.7a1.17 1.17 0 1 0 0-2.34 1.17 1.17 0 0 0 0 2.34z"/></svg>',
+      threads: '<svg viewBox="0 0 24 24"><path d="M12.2 22c-3.7 0-6.6-1.4-8.2-4.1C2.6 15.6 2 13.1 2 12s.6-3.6 2-5.9C5.6 3.4 8.5 2 12.2 2c3.2 0 5.7 1 7.4 3l-1.9 1.6c-1.2-1.4-3-2.1-5.4-2.1-2.7 0-4.7 1-5.9 2.9C5.4 8.9 5 10.4 5 12s.4 3.1 1.4 4.6c1.2 1.9 3.2 2.9 5.9 2.9 2.3 0 4-.7 5.1-1.9.8-.9 1.2-2 1.3-3.3-.8.5-1.9.8-3.3.8-1.6 0-2.9-.4-3.8-1.2-.8-.7-1.2-1.7-1.2-2.7 0-1.1.5-2 1.4-2.7 1-.7 2.3-1 4-1 .9 0 1.7.1 2.5.3-.2-1-.6-1.7-1.2-2.2-.7-.6-1.7-.9-2.9-.9-1.4 0-2.6.4-3.5 1.2l-1.7-1.6c1.3-1.2 3.1-1.9 5.2-1.9 2 0 3.6.6 4.8 1.7 1.3 1.2 2 3 2.1 5.3v.6c0 3-1 5.3-2.8 6.9-1.5 1.3-3.4 2-5.6 2zm.6-10.6c-1 0-1.8.2-2.3.6-.4.3-.6.6-.6 1.1 0 .4.2.8.6 1.1.5.4 1.2.6 2.1.6 1.2 0 2.2-.3 2.9-.9-.1-.6-.4-1.1-.8-1.5-.5-.5-1.1-.9-1.9-1z"/></svg>',
+      linktree: '<svg viewBox="0 0 24 24"><path d="M12 2l6 6h-4v3.5l4.5 4.5H15v4h-2v-4H9.5L14 11.5V8h-4l6-6zM11 15v7h2v-7h-2z"/></svg>',
+      whatsapp: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1.1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.8 1.9.8 2.1.1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.5.5-.2.2-.3.4-.1.7.2.3.9 1.4 1.9 2.3 1.3 1.2 2.4 1.5 2.7 1.7.3.2.5.1.7-.1.2-.2.8-.9 1-1.2.2-.3.4-.3.7-.2.3.1 1.7.8 2 .9.3.2.5.2.6.3.1.2.1.9-.1 1.6z"/></svg>',
+      youtube: '<svg viewBox="0 0 24 24"><path d="M23 12s0-3.4-.4-5a3 3 0 0 0-2.1-2.1C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.5.4A3 3 0 0 0 1.4 7C1 8.6 1 12 1 12s0 3.4.4 5a3 3 0 0 0 2.1 2.1c1.6.4 8.5.4 8.5.4s6.9 0 8.5-.4a3 3 0 0 0 2.1-2.1c.4-1.6.4-5 .4-5zM9.8 15.5v-7l6 3.5-6 3.5z"/></svg>',
+      x: '<svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.3L23 22h-6.6l-5.2-6.8L5.2 22H2l7.7-8.8L1.5 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.8L7.4 4H5.5l12.2 16z"/></svg>',
+      twitter: '<svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.3L23 22h-6.6l-5.2-6.8L5.2 22H2l7.7-8.8L1.5 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.8L7.4 4H5.5l12.2 16z"/></svg>',
+      telegram: '<svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 20c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.9L18 7.5c.4-.3-.1-.5-.6-.2L7.1 13.6l-4.7-1.5c-1-.3-1-1 .2-1.5L20.5 3.3c.8-.3 1.6.2 1.4 1z"/></svg>'
+    };
+    for (const platform in icons) {
+      if (key.includes(platform)) return icons[platform];
+    }
+    // Generic fallback (chain/link icon)
+    return '<svg viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3-3a3 3 0 0 1 4.2 4.2l-1.6 1.6a1 1 0 1 1-1.4-1.4l1.6-1.6a1 1 0 0 0-1.4-1.4l-3 3a1 1 0 0 1-1.4 0zm2.8-2.8a1 1 0 0 1 0 1.4l-3 3a3 3 0 0 1-4.2-4.2l1.6-1.6a1 1 0 1 1 1.4 1.4l-1.6 1.6a1 1 0 1 0 1.4 1.4l3-3a1 1 0 0 1 1.4 0z"/></svg>';
+  }
+
   function renderSocials() {
     const container = document.getElementById("socialsContainer");
     container.innerHTML = socialLinks
       .filter(s => s.url)
-      .map(s => `<a href="${s.url}" target="_blank" rel="noopener">${escHtml(s.name)}</a>`)
+      .map(s => `<a class="btn-gradient" href="${s.url}" target="_blank" rel="noopener">${escHtml(s.name)}</a>`)
       .join("");
 
     const tracking = document.getElementById("trackingLinksContainer");
@@ -1078,6 +1155,26 @@
     const d = document.createElement("div");
     d.textContent = str || "";
     return d.innerHTML;
+  }
+
+  // Update every email display (About, Footer, Home Contact) — both visible text and the mailto: link
+  // Update every email display (About, Footer, Home Contact) — both visible text and a pre-filled mailto: link
+  function setEmailLinks(email) {
+    const subject = "Appointment Request - Interested in a Plan";
+    const body =
+      "Hi, I would like to book an appointment to find out more about your protection plans.\n\n" +
+      "Name:\n" +
+      "Preferred Date/Time:\n" +
+      "Plan I'm interested in: ✅ \n\n" +
+      "(Please fill in the details above before sending — thank you!)";
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    ["contactEmail", "aboutEmail", "contactEmailHome"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = email;
+        el.href = mailtoLink;
+      }
+    });
   }
 
   function renderPlans() {
@@ -1416,6 +1513,47 @@
 
     window.open(`https://wa.me/${OWNER.whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   });
+</script>
+
+<!-- Firebase (Firestore) — shared database so every visitor/device sees the same content -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAHIfZ-nyD4GLJowYGWEGkrHiJqDUebq70",
+    authDomain: "wealth-planner-8204f.firebaseapp.com",
+    projectId: "wealth-planner-8204f",
+    storageBucket: "wealth-planner-8204f.firebasestorage.app",
+    messagingSenderId: "1021901548391",
+    appId: "1:1021901548391:web:4019de3028da509d181dc2",
+    measurementId: "G-LLE31BESDH"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const siteDocRef = doc(db, "site", "main");
+
+  window.firebaseSaveData = async function (data) {
+    try {
+      await setDoc(siteDocRef, data);
+    } catch (e) {
+      console.error("Firebase save failed:", e);
+    }
+  };
+
+  window.firebaseLoadData = async function () {
+    try {
+      const snap = await getDoc(siteDocRef);
+      return snap.exists() ? snap.data() : null;
+    } catch (e) {
+      console.error("Firebase load failed:", e);
+      return null;
+    }
+  };
+
+  // Now that Firebase is ready, pull the shared data and apply it on top of the local/default render
+  if (window.syncFromFirebase) window.syncFromFirebase();
 </script>
 </body>
 </html>
