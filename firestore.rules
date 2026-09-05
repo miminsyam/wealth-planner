@@ -4,7 +4,7 @@ service cloud.firestore {
     match /site/main {
       allow read: if true;
       allow write: if request.auth != null
-        && request.auth.token.email == "hardyvimalaya@gmail.com";
+        && request.auth.token.email == "mdmin2603@gmail.com";
     }
 
     match /applications/{applicationId} {

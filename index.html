@@ -763,7 +763,7 @@
   const OWNER = {
     whatsappNumber: "60143966641",
     company: "Muqmeen Group",
-    email: "hardyvimalaya@gmail.com",
+    email: "mdmin2603@gmail.com",
     officePhone: "014 396 6641",
     website: "https://www.muqmeen.com.my",
     address: "No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan"
@@ -936,9 +936,9 @@
   }
   async function checkOwnerPassword() {
     const password = document.getElementById("ownerPasswordInput").value;
-    const email = prompt("Admin email:");
-    if (!email || !password || !window.firebaseAdminLogin) return;
-    const ok = await window.firebaseAdminLogin(email.trim(), password);
+    const email = OWNER.email;
+    if (!password || !window.firebaseAdminLogin) return;
+    const ok = await window.firebaseAdminLogin(email, password);
     if (ok) {
       ownerUnlocked = true;
       closeModal("passwordModal");
