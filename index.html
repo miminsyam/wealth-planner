@@ -764,6 +764,7 @@
     whatsappNumber: "60143966641",
     company: "Muqmeen Group",
     email: "hardyvimalaya@gmail.com",
+  adminEmails: ["hardyvimalaya@gmail.com", "mdmin2603@gmail.com"],
     officePhone: "014 396 6641",
     website: "https://www.muqmeen.com.my",
     address: "No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan"
@@ -936,9 +937,8 @@
   }
   async function checkOwnerPassword() {
     const password = document.getElementById("ownerPasswordInput").value;
-    const email = OWNER.email;
     if (!password || !window.firebaseAdminLogin) return;
-    const ok = await window.firebaseAdminLogin(email, password);
+    const ok = await window.firebaseAdminLogin(OWNER.adminEmails, password);
     if (ok) {
       ownerUnlocked = true;
       closeModal("passwordModal");
@@ -1554,14 +1554,17 @@
   const auth = getAuth(app);
   const siteDocRef = doc(db, "site", "main");
   
-  window.firebaseAdminLogin = async function (email, password) {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      return true;
-    } catch (e) {
-      console.error("Firebase admin sign-in failed:", e);
-      return false;
+  window.firebaseAdminLogin = async function (emails, password) {
+    const candidates = Array.isArray(emails) ? emails : [emails];
+    for (const email of candidates) {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        return true;
+      } catch (e) {
+        console.warn("[v0] Admin login failed for", email, e.code);
+      }
     }
+    return false;
   };
 
   window.firebaseSaveData = async function (data) {
