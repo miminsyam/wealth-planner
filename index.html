@@ -921,15 +921,15 @@
     reader.readAsDataURL(file);
   });
 
-  // Owner Settings hub — Firebase Authentication protects admin writes.
+  // Owner Settings hub (password protected)
+  const OWNER_PASSWORD = "1234"; // <-- change this to your own password
   let ownerUnlocked = false;
-  
+
   function openSettingsHub() {
     if (ownerUnlocked) {
       document.getElementById("settingsHubModal").classList.add("active");
     } else {
-      document.getElementById("passwordError").textContent = "Sign in with your admin email and password.";
-      document.getElementById("passwordError").style.display = "block";
+      document.getElementById("passwordError").style.display = "none";
       document.getElementById("ownerPasswordInput").value = "";
       document.getElementById("passwordModal").classList.add("active");
       setTimeout(() => document.getElementById("ownerPasswordInput").focus(), 100);
@@ -944,7 +944,6 @@
       closeModal("passwordModal");
       document.getElementById("settingsHubModal").classList.add("active");
     } else {
-      document.getElementById("passwordError").textContent = "Admin sign-in failed. Check your email and password.";
       document.getElementById("passwordError").style.display = "block";
     }
   }
@@ -1480,7 +1479,7 @@
   }
 
   // Pre-Consultation form -> WhatsApp
-  document.getElementById("preConsultForm").addEventListener("submit", async function (e) {
+  document.getElementById("preConsultForm").addEventListener("submit", function (e) {
     e.preventDefault();
     const fullName = document.getElementById("fullName").value.trim();
     const dob = document.getElementById("dob").value;
@@ -1515,28 +1514,14 @@
       message += `*Expected Due Date:* ${eddDate}\n`;
     }
 
-    if (!window.firebaseSaveApplication) {
-      alert("Database belum bersedia. Sila cuba lagi.");
-      return;
-    }
-    const saved = await window.firebaseSaveApplication({
-      fullName, dob, occupation, maritalStatus, monthlyBudget, smokingStatus,
-      referralSource, referrerName, referrerPhone, medicalHistory, coverage,
-      pregnancyWeeks, eddDate, status: "new"
-    });
-    if (!saved) {
-      alert("Permohonan tidak dapat disimpan. WhatsApp tidak dibuka.");
-      return;
-    }
     window.open(`https://wa.me/${OWNER.whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
-    this.reset();
   });
 </script>
 
 <!-- Firebase (Firestore) — shared database so every visitor/device sees the same content -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
   const firebaseConfig = {
@@ -1568,27 +1553,10 @@
   };
 
   window.firebaseSaveData = async function (data) {
-    if (!auth.currentUser) return false;
     try {
       await setDoc(siteDocRef, data);
-      return true;
     } catch (e) {
       console.error("Firebase save failed:", e);
-      return false;
-    }
-  };
-
-  window.firebaseSaveApplication = async function (data) {
-    try {
-      await addDoc(collection(db, "applications"), {
-        ...data,
-        createdAt: serverTimestamp(),
-        source: "website"
-      });
-      return true;
-    } catch (e) {
-      console.error("Firebase application save failed:", e);
-      return false;
     }
   };
 
