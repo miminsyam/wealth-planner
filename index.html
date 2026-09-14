@@ -656,9 +656,55 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     <div class="modal-field"><label>Email</label><input type="email" id="ownerEmailInput" autocomplete="username" onkeydown="if(event.key==='Enter')checkOwnerPassword()"></div>
     <div class="modal-field"><label>Password</label><input type="password" id="ownerPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkOwnerPassword()"></div>
     <p id="passwordError" style="display:none;color:#ff8080;font-size:12.5px;margin-top:-8px"></p>
+    <button type="button" class="back-link" style="border:0;background:none;padding:0;font-size:12px" onclick="openPasswordReset()">Forgot password?</button>
+    <button type="button" class="back-link" style="border:0;background:none;padding:0;font-size:12px;margin-left:12px" onclick="openEditorRegistration()">Register editor</button>
     <div class="modal-actions">
       <button class="btn-outline" onclick="closeModal('passwordModal')">Cancel</button>
       <button class="btn primary" onclick="checkOwnerPassword()">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDITOR REGISTRATION MODAL -->
+<div class="modal-overlay" id="editorRegistrationModal">
+  <div class="modal-box" style="max-width:360px">
+    <h3>Register Editor</h3>
+    <p class="muted" style="font-size:13px;margin-top:-6px">Hanya email owner/admin yang diluluskan boleh mendaftar.</p>
+    <div class="modal-field"><label>Email</label><input type="email" id="registerEmailInput" autocomplete="email"></div>
+    <div class="modal-field"><label>Password</label><input type="password" id="registerPasswordInput" autocomplete="new-password" minlength="6"></div>
+    <div class="modal-field"><label>Confirm Password</label><input type="password" id="registerConfirmInput" autocomplete="new-password" minlength="6"></div>
+    <p id="registerMessage" style="display:none;font-size:12.5px;margin-top:-8px"></p>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('editorRegistrationModal')">Cancel</button>
+      <button class="btn primary" onclick="registerEditor()">Register</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD RESET MODAL -->
+<div class="modal-overlay" id="resetPasswordModal">
+  <div class="modal-box" style="max-width:360px">
+    <h3>Reset Password</h3>
+    <p class="muted" style="font-size:13px;margin-top:-6px">Masukkan email akaun yang telah diluluskan. Pautan reset akan dihantar ke email anda.</p>
+    <div class="modal-field"><label>Email</label><input type="email" id="resetEmailInput" autocomplete="email"></div>
+    <p id="resetPasswordMessage" style="display:none;font-size:12.5px;margin-top:-8px"></p>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('resetPasswordModal')">Cancel</button>
+      <button class="btn primary" onclick="sendPasswordReset()">Send Reset Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PASSWORD MODAL -->
+<div class="modal-overlay" id="newPasswordModal">
+  <div class="modal-box" style="max-width:360px">
+    <h3>Set New Password</h3>
+    <p class="muted" style="font-size:13px;margin-top:-6px">Tetapkan password baharu untuk akaun anda.</p>
+    <div class="modal-field"><label>New Password</label><input type="password" id="newPasswordInput" autocomplete="new-password" minlength="6"></div>
+    <div class="modal-field"><label>Confirm Password</label><input type="password" id="confirmPasswordInput" autocomplete="new-password" minlength="6"></div>
+    <p id="newPasswordMessage" style="display:none;color:#ff8080;font-size:12.5px;margin-top:-8px"></p>
+    <div class="modal-actions">
+      <button class="btn primary" onclick="updateNewPassword()">Save Password</button>
     </div>
   </div>
 </div>
@@ -1019,17 +1065,80 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
   }
 
   async function checkOwnerPassword() {
-    const email = document.getElementById("ownerEmailInput").value.trim().toLowerCase();
-    const password = document.getElementById("ownerPasswordInput").value;
-    const error = document.getElementById("passwordError");
-    if (!APPROVED_EDITORS.has(email)) { error.textContent = "Akaun ini tidak dibenarkan mengedit."; error.style.display = "block"; return; }
-    if (!window.supabaseSignIn) { error.textContent = "Sambungan login belum tersedia. Sila cuba lagi."; error.style.display = "block"; return; }
-    const result = await window.supabaseSignIn(email, password);
-    if (result.error) { error.textContent = "Email atau password tidak sah."; error.style.display = "block"; return; }
-    ownerUnlocked = true;
-    window.ownerUnlocked = true;
-    closeModal("passwordModal");
-    document.getElementById("settingsHubModal").classList.add("active");
+  const email = document.getElementById("ownerEmailInput").value.trim().toLowerCase();
+  const password = document.getElementById("ownerPasswordInput").value;
+  const error = document.getElementById("passwordError");
+  if (!APPROVED_EDITORS.has(email)) { error.textContent = "Akaun ini tidak dibenarkan mengedit."; error.style.display = "block"; return; }
+  if (!window.supabaseSignIn) { error.textContent = "Sambungan login belum tersedia. Sila cuba lagi."; error.style.display = "block"; return; }
+  const result = await window.supabaseSignIn(email, password);
+  if (result.error) { error.textContent = "Email atau password tidak sah."; error.style.display = "block"; return; }
+  ownerUnlocked = true;
+  window.ownerUnlocked = true;
+  closeModal("passwordModal");
+  document.getElementById("settingsHubModal").classList.add("active");
+  }
+
+  function sendPasswordReset() {
+  const sourceEmail = document.getElementById("resetEmailInput");
+  const email = (sourceEmail?.value || document.getElementById("ownerEmailInput").value).trim().toLowerCase();
+  const message = document.getElementById("resetPasswordMessage");
+  if (!APPROVED_EDITORS.has(email)) {
+    if (message) { message.textContent = "Email ini tidak dibenarkan."; message.style.color = "#ff8080"; message.style.display = "block"; }
+    return;
+  }
+  if (!window.supabaseSendPasswordReset) return;
+  window.supabaseSendPasswordReset(email).then(result => {
+    if (result.error) {
+      if (message) { message.textContent = "Tidak dapat menghantar pautan reset. Cuba lagi."; message.style.color = "#ff8080"; message.style.display = "block"; }
+      return;
+    }
+    if (message) { message.textContent = "Pautan reset telah dihantar. Semak email anda."; message.style.color = "#8fe3a1"; message.style.display = "block"; }
+  });
+  }
+
+  function openEditorRegistration() {
+  document.getElementById("passwordModal").classList.remove("active");
+  document.getElementById("registerEmailInput").value = document.getElementById("ownerEmailInput").value.trim();
+  document.getElementById("registerMessage").style.display = "none";
+  document.getElementById("editorRegistrationModal").classList.add("active");
+  }
+
+  async function registerEditor() {
+  const email = document.getElementById("registerEmailInput").value.trim().toLowerCase();
+  const password = document.getElementById("registerPasswordInput").value;
+  const confirmation = document.getElementById("registerConfirmInput").value;
+  const message = document.getElementById("registerMessage");
+  message.style.display = "block";
+  message.style.color = "#ff8080";
+  if (!APPROVED_EDITORS.has(email)) { message.textContent = "Email ini tidak dibenarkan."; return; }
+  if (password.length < 6) { message.textContent = "Password mestilah sekurang-kurangnya 6 aksara."; return; }
+  if (password !== confirmation) { message.textContent = "Password tidak sepadan."; return; }
+  const result = await window.supabaseSignUp(email, password);
+  if (result.error) { message.textContent = "Pendaftaran gagal. Akaun mungkin sudah wujud atau email tidak dapat disahkan."; return; }
+  message.textContent = "Pendaftaran berjaya. Semak email untuk pengesahan sebelum login.";
+  message.style.color = "#8fe3a1";
+  }
+
+  function openPasswordReset() {
+  document.getElementById("passwordModal").classList.remove("active");
+  document.getElementById("resetEmailInput").value = document.getElementById("ownerEmailInput").value.trim();
+  document.getElementById("resetPasswordMessage").style.display = "none";
+  document.getElementById("resetPasswordModal").classList.add("active");
+  }
+
+  async function updateNewPassword() {
+  const password = document.getElementById("newPasswordInput").value;
+  const confirmation = document.getElementById("confirmPasswordInput").value;
+  const message = document.getElementById("newPasswordMessage");
+  if (password.length < 6 || password !== confirmation) {
+    message.textContent = password.length < 6 ? "Password mestilah sekurang-kurangnya 6 aksara." : "Password tidak sepadan.";
+    message.style.display = "block";
+    return;
+  }
+  const result = await window.supabaseUpdatePassword(password);
+  if (result.error) { message.textContent = "Tidak dapat menyimpan password baharu. Cuba lagi."; message.style.display = "block"; return; }
+  closeModal("newPasswordModal");
+  alert("Password berjaya dikemaskini. Sila login semula.");
   }
 
   // Edit Profile modal
@@ -1688,6 +1797,28 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     return { data, error };
   };
 
+  window.supabaseSignUp = async (email, password) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: window.location.origin + window.location.pathname }
+    });
+    return { data, error };
+  };
+
+  window.supabaseSendPasswordReset = async (email) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+    return { error };
+  };
+
+  window.supabaseUpdatePassword = async (password) => {
+    const { data, error } = await supabase.auth.updateUser({ password });
+    if (!error) window.supabaseCurrentUser = data.user;
+    return { data, error };
+  };
+
   window.supabaseSaveData = async (data) => {
     const user = await refreshUser();
     if (!user) return { ok: false };
@@ -1711,9 +1842,17 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     })
     .subscribe();
 
-  supabase.auth.onAuthStateChange((_event, session) => {
+  supabase.auth.onAuthStateChange((event, session) => {
     window.supabaseCurrentUser = session?.user || null;
     if (!window.supabaseCurrentUser) window.ownerUnlocked = false;
+    if (event === "PASSWORD_RECOVERY") {
+      setTimeout(() => {
+        document.getElementById("newPasswordMessage").style.display = "none";
+        document.getElementById("newPasswordInput").value = "";
+        document.getElementById("confirmPasswordInput").value = "";
+        document.getElementById("newPasswordModal").classList.add("active");
+      }, 100);
+    }
   });
 </script>
 </body>
