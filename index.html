@@ -222,6 +222,10 @@
   .modal-field{margin-bottom:14px}
   .modal-field label{display:block;font-weight:700;margin-bottom:6px;font-size:13px}
   .modal-field input,.modal-field textarea{width:100%;padding:10px 11px;border-radius:10px;border:1px solid var(--field-border);background:var(--field);color:var(--white);font-family:inherit;font-size:13.5px}
+  .password-input-wrap{position:relative}
+  .password-input-wrap input{padding-right:76px}
+  .password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:1px solid rgba(212,175,55,.45);border-radius:6px;background:transparent;color:var(--gold);padding:4px 8px;font-size:11px;cursor:pointer}
+  .password-toggle:hover{background:rgba(212,175,55,.12)}
   .modal-field textarea{min-height:60px;resize:vertical}
   .plan-edit-row{border:1px solid rgba(212,175,55,.3);padding:14px;border-radius:8px;margin-bottom:14px}
   .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
@@ -654,7 +658,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     <h3>Admin / Owner Login</h3>
     <p class="muted" style="font-size:13px;margin-top:-6px">Log masuk dengan akaun owner atau admin yang telah diluluskan.</p>
     <div class="modal-field"><label>Email</label><input type="email" id="ownerEmailInput" autocomplete="username" onkeydown="if(event.key==='Enter')checkOwnerPassword()"></div>
-    <div class="modal-field"><label>Password</label><input type="password" id="ownerPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkOwnerPassword()"></div>
+    <div class="modal-field"><label for="ownerPasswordInput">Password</label><div class="password-input-wrap"><input type="password" id="ownerPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkOwnerPassword()"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('ownerPasswordInput', this)" aria-controls="ownerPasswordInput" aria-pressed="false">Lihat</button></div></div>
     <p id="passwordError" style="display:none;color:#ff8080;font-size:12.5px;margin-top:-8px"></p>
     <button type="button" class="back-link" style="border:0;background:none;padding:0;font-size:12px" onclick="openPasswordReset()">Forgot password?</button>
     <button type="button" class="back-link" style="border:0;background:none;padding:0;font-size:12px;margin-left:12px" onclick="openEditorRegistration()">Register editor</button>
@@ -1062,6 +1066,15 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     document.getElementById("ownerPasswordInput").value = "";
     document.getElementById("passwordModal").classList.add("active");
     setTimeout(() => document.getElementById("ownerEmailInput").focus(), 100);
+  }
+
+  function togglePasswordVisibility(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const isVisible = input.type === "text";
+    input.type = isVisible ? "password" : "text";
+    button.textContent = isVisible ? "Lihat" : "Sembunyi";
+    button.setAttribute("aria-pressed", String(!isVisible));
   }
 
   async function checkOwnerPassword() {
