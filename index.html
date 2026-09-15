@@ -223,9 +223,10 @@
   .modal-field label{display:block;font-weight:700;margin-bottom:6px;font-size:13px}
   .modal-field input,.modal-field textarea{width:100%;padding:10px 11px;border-radius:10px;border:1px solid var(--field-border);background:var(--field);color:var(--white);font-family:inherit;font-size:13.5px}
   .password-input-wrap{position:relative}
-  .password-input-wrap input{padding-right:76px}
-  .password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:1px solid rgba(212,175,55,.45);border-radius:6px;background:transparent;color:var(--gold);padding:4px 8px;font-size:11px;cursor:pointer}
-  .password-toggle:hover{background:rgba(212,175,55,.12)}
+  .password-input-wrap input{padding-right:46px}
+  .password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;border-radius:6px;background:transparent;color:var(--gold);padding:5px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+  .password-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .password-toggle:hover,.password-toggle:focus-visible{background:rgba(212,175,55,.12);outline:none}
   .modal-field textarea{min-height:60px;resize:vertical}
   .plan-edit-row{border:1px solid rgba(212,175,55,.3);padding:14px;border-radius:8px;margin-bottom:14px}
   .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
@@ -658,7 +659,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     <h3>Admin / Owner Login</h3>
     <p class="muted" style="font-size:13px;margin-top:-6px">Sign in with an approved owner or admin account.</p>
     <div class="modal-field"><label>Email</label><input type="email" id="ownerEmailInput" autocomplete="username" onkeydown="if(event.key==='Enter')checkOwnerPassword()"></div>
-    <div class="modal-field"><label for="ownerPasswordInput">Password</label><div class="password-input-wrap"><input type="password" id="ownerPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkOwnerPassword()"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('ownerPasswordInput', this)" aria-controls="ownerPasswordInput" aria-pressed="false">Lihat</button></div></div>
+    <div class="modal-field"><label for="ownerPasswordInput">Password</label><div class="password-input-wrap"><input type="password" id="ownerPasswordInput" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkOwnerPassword()"><button type="button" class="password-toggle" onclick="togglePasswordVisibility('ownerPasswordInput', this)" aria-controls="ownerPasswordInput" aria-label="Show password" title="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5.5 9.5-5.5S21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg></button></div></div>
     <p id="passwordError" style="display:none;color:#ff8080;font-size:12.5px;margin-top:-8px"></p>
     <p id="lockoutMessage" style="display:none;color:#ffcc66;font-size:12.5px;margin-top:-8px"></p>
     <button type="button" class="back-link" style="border:0;background:none;padding:0;font-size:12px" onclick="openPasswordReset()">Forgot password?</button>
@@ -1074,7 +1075,8 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     if (!input) return;
     const isVisible = input.type === "text";
     input.type = isVisible ? "password" : "text";
-    button.textContent = isVisible ? "Lihat" : "Sembunyi";
+    button.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+    button.setAttribute("title", isVisible ? "Show password" : "Hide password");
     button.setAttribute("aria-pressed", String(!isVisible));
   }
 
