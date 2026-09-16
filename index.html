@@ -105,8 +105,8 @@
   .gift-offer-block .gift-image-wrap{max-width:100%;aspect-ratio:16/9;margin:0 0 14px}
   .gift-image-poster{max-width:280px;aspect-ratio:auto!important;height:auto!important;margin:0 auto 14px !important;background:#111}
   .gift-image-poster img{object-fit:contain!important;height:auto!important;width:100%!important}
-  .gift-image-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-  .gift-image-row .gift-image-wrap{margin:0}
+  .gift-image-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-bottom:14px}
+  .gift-image-row .gift-image-wrap{flex:0 1 320px;margin:0}
   .gift-extra-text p{margin-top:10px}
   .gift-edit-card{border:1px solid rgba(212,175,55,.3);border-radius:10px;padding:14px;margin:14px 0;background:transparent}
   .gift-edit-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.gift-edit-card h4{margin:0 0 10px;color:var(--gold)}.gift-column-actions{margin:10px 0 14px}.gift-edit-card.is-deleted{display:none}.gift-edit-card .gift-delete-column{font-size:11px;padding:6px 9px;color:#e88b7d;border-color:#e88b7d}
@@ -1801,7 +1801,13 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
   function refreshGiftImageVisibility() {
     document.querySelectorAll('.gift-image-wrap').forEach(wrap => {
       const image = wrap.querySelector('img');
-      wrap.classList.toggle('empty', !image || !image.getAttribute('src'));
+      const hasUploadedImage = Boolean(image && image.getAttribute('src') && (!image.complete || image.naturalWidth > 0));
+      wrap.classList.toggle('empty', !hasUploadedImage);
+      if (image && !image.dataset.visibilityBound) {
+        image.dataset.visibilityBound = 'true';
+        image.addEventListener('load', refreshGiftImageVisibility, { once: true });
+        image.addEventListener('error', refreshGiftImageVisibility, { once: true });
+      }
     });
   }
   function handleGiftImageUpload(input, imageId) {
