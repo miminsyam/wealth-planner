@@ -729,6 +729,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditTestimonials()">💬 Edit Feedback</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditCoverage()">☑️ Edit Coverage Options</button>
       <button class="btn primary" onclick="closeModal('settingsHubModal');openEditGift()">🎁 Edit Free Gift</button>
+      <button class="btn-outline" style="border-color:#b94a48;color:#ff9b98" onclick="lockOutEditors()">Lock Out Login</button>
       <button class="btn-outline" onclick="closeModal('settingsHubModal')">Close</button>
     </div>
   </div>
@@ -1101,16 +1102,28 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
   }
 
   function showLockoutStatus(email) {
-    const message = document.getElementById("lockoutMessage");
-    if (!message) return false;
-    const state = getLoginLockout(email);
-    if (!state.lockedUntil) { message.style.display = "none"; return false; }
-    const minutes = Math.ceil((state.lockedUntil - Date.now()) / 60000);
-    message.textContent = `Too many failed attempts. Try again in ${minutes} minute${minutes === 1 ? "" : "s"}.`;
-    message.style.display = "block";
-    return true;
+  const message = document.getElementById("lockoutMessage");
+  if (!message) return false;
+  const state = getLoginLockout(email);
+  if (!state.lockedUntil) { message.style.display = "none"; return false; }
+  const minutes = Math.ceil((state.lockedUntil - Date.now()) / 60000);
+  message.textContent = `Too many failed attempts. Try again in ${minutes} minute${minutes === 1 ? "" : "s"}.`;
+  message.style.display = "block";
+  return true;
   }
 
+  function lockOutEditors() {
+  if (!isApprovedEditor()) return;
+  const confirmed = window.confirm("Lock login for all approved editors for 15 minutes?");
+  if (!confirmed) return;
+  const lockedUntil = Date.now() + LOGIN_LOCKOUT_MS;
+  APPROVED_EDITORS.forEach((email) => saveLoginLockout(email, { attempts: LOGIN_MAX_ATTEMPTS, lockedUntil }));
+  ownerUnlocked = false;
+  window.ownerUnlocked = false;
+  closeModal("settingsHubModal");
+  window.supabaseSignOut?.();
+  }
+  
   async function checkOwnerPassword() {
   const email = document.getElementById("ownerEmailInput").value.trim().toLowerCase();
   const password = document.getElementById("ownerPasswordInput").value;
