@@ -113,7 +113,7 @@
   .gift-edit-text-row{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
   .gift-edit-text-row textarea{flex:1}
   .gift-edit-text-row .btn-outline{white-space:nowrap;padding:8px 10px}
-  .gift-edit-images{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.gift-image-action{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.gift-image-action .btn-outline{font-size:12px;padding:7px 9px}.gift-remove-image{color:#e88b7d;border-color:#e88b7d}
+  .gift-edit-images{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.gift-image-action{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.gift-image-action.is-hidden{display:none}.gift-image-action .btn-outline{font-size:12px;padding:7px 9px}.gift-remove-image{color:#e88b7d;border-color:#e88b7d}.gift-add-next{width:34px;height:34px;padding:0!important;border-radius:50%;font-size:22px!important;line-height:1}.gift-remove-image{font-size:0!important;width:34px;height:34px;padding:0!important}.gift-remove-image::before{content:'🗑️';font-size:16px}
   .gift-edit-images{display:flex;gap:8px;flex-wrap:wrap}
   @media(max-width:600px){.gift-image-row{grid-template-columns:1fr}.gift-edit-text-row{flex-direction:column}.gift-edit-text-row .btn-outline{width:100%}}
   /* CONTACT TEASER */
@@ -1870,12 +1870,37 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     row.innerHTML = `<textarea rows="3" placeholder="Enter text">${escapeHtml(value)}</textarea><button type="button" class="btn-outline" onclick="this.parentElement.remove()">Delete text</button>`;
     list.appendChild(row);
   }
+  function setupGiftImageEditor() {
+    document.querySelectorAll('.gift-edit-images').forEach(container => {
+      const actions = Array.from(container.querySelectorAll('.gift-image-action'));
+      actions.forEach((action, index) => {
+        action.classList.toggle('is-hidden', index > 0 && !action.classList.contains('has-image'));
+        const addButton = action.querySelector('button:not(.gift-remove-image)');
+        const input = action.querySelector('input[type="file"]') || document.getElementById((addButton?.getAttribute('onclick') || '').match(/giftPhotoInput[^']+/)?.[0]);
+        if (addButton) {
+          addButton.textContent = index === 0 ? 'Add image' : '＋';
+          addButton.classList.toggle('gift-add-next', index > 0);
+          addButton.onclick = () => input?.click();
+        }
+        const removeButton = action.querySelector('.gift-remove-image');
+        if (removeButton) removeButton.setAttribute('aria-label', 'Remove image');
+      });
+      if (!container.querySelector('.gift-add-next-control')) {
+        const plus = document.createElement('button');
+        plus.type = 'button'; plus.className = 'btn-outline gift-add-next-control gift-add-next'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Add another image');
+        plus.onclick = () => { const next = actions.find(action => action.classList.contains('is-hidden')); if (next) { next.classList.remove('is-hidden'); next.classList.add('has-image'); next.querySelector('button:not(.gift-remove-image)')?.click(); plus.style.display = actions[actions.length - 1].classList.contains('is-hidden') ? '' : 'none'; } };
+        container.appendChild(plus);
+      }
+    });
+  }
+
   function openEditGift() {
     document.getElementById("edit_giftHeading").value = document.getElementById("giftHeading").textContent;
     document.getElementById("edit_giftLimited").value = document.getElementById("giftLimited").textContent;
     document.getElementById("edit_giftStock").value = document.getElementById("giftStock").textContent;
     document.getElementById("edit_giftDesc").value = document.getElementById("giftDesc").textContent;
     [1,2,3].forEach(column => { document.getElementById(`edit_giftTitle${column}`).value = document.getElementById(`giftTitle${column}`).textContent; const editor = document.getElementById(`giftTextEdit${column}`); editor.innerHTML = ""; Array.from(document.querySelectorAll(`#giftTextList${column} p`)).forEach(p => addGiftTextRow(column, p.textContent)); });
+    setupGiftImageEditor();
     document.getElementById("giftModal").classList.add("active");
   }
   function saveGift() {
