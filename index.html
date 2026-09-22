@@ -92,7 +92,7 @@
 
   /* FREE GIFT */
   .gift-section{background:linear-gradient(180deg,#000,#0c0c0c);padding:70px 6%;text-align:center}
-  .gift-image-wrap{width:100%;max-width:320px;aspect-ratio:1/1;margin:24px auto 0;border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#111;display:flex;align-items:center;justify-content:center}.gift-image-wrap.empty{display:none}
+  .gift-image-wrap{width:100%;max-width:320px;aspect-ratio:1/1;margin:24px auto 0;border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#111;display:flex;align-items:center;justify-content:center}.gift-image-wrap.empty{display:none}.gift-image-wrap.empty img{display:none}
   .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
   .gift-stock{color:var(--gold);font-weight:700;font-size:14px;margin:10px 0 14px}
   .gift-limited{color:#e8543a;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:4px 0}
@@ -1818,6 +1818,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       const image = wrap.querySelector('img');
       const source = image?.getAttribute('src') || '';
       const hasUploadedImage = Boolean(source && (!image.complete || image.naturalWidth > 0));
+      if (source && image.complete && image.naturalWidth === 0) image.removeAttribute('src');
       wrap.classList.toggle('empty', !hasUploadedImage);
       if (image && !image.dataset.visibilityBound) {
         image.dataset.visibilityBound = 'true';
@@ -1827,7 +1828,9 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     });
   }
   window.setTimeout(refreshGiftImageVisibility, 0);
+  window.setTimeout(refreshGiftImageVisibility, 0);
   window.setTimeout(refreshGiftImageVisibility, 800);
+  window.setTimeout(refreshGiftImageVisibility, 1800);
   function handleGiftImageUpload(input, imageId) {
     const file = input.files && input.files[0];
     if (!file) return;
@@ -1893,7 +1896,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
         const input = match ? document.getElementById(match[1]) : null;
         const imageMatch = action.querySelector('.gift-remove-image')?.getAttribute('onclick')?.match(/'([^']+)'/);
         const image = imageMatch ? document.getElementById(imageMatch[1]) : null;
-        const hasImage = Boolean(image?.getAttribute('src'));
+        const hasImage = Boolean(image?.getAttribute('src') && (!image.complete || image.naturalWidth > 0));
         action.classList.toggle('is-hidden', index > 0 && !hasImage);
         action.classList.toggle('has-image', hasImage);
         if (addButton) {
