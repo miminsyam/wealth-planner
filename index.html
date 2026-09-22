@@ -115,7 +115,7 @@
   .gift-edit-text-row textarea{flex:1;width:100%;min-height:280px;padding:16px 18px;border:1px solid rgba(212,175,55,.75);border-radius:12px;background:#050505;color:#f4f4f4;font-family:inherit;font-size:18px;line-height:1.5;resize:vertical;box-sizing:border-box}
   .gift-edit-text-row textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,.16)}
   .gift-edit-text-row .btn-outline{white-space:nowrap;padding:12px 16px;min-height:52px;font-size:15px}
-  .gift-edit-images{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.gift-image-action{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.gift-image-action.is-hidden{display:none}.gift-image-action .btn-outline{font-size:12px;padding:7px 9px}.gift-remove-image{color:#e88b7d;border-color:#e88b7d}.gift-add-next{width:34px;height:34px;padding:0!important;border-radius:50%;font-size:22px!important;line-height:1}.gift-remove-image{font-size:0!important;width:34px;height:34px;padding:0!important}.gift-remove-image::before{content:'🗑️';font-size:16px}
+  .gift-edit-images{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:12px}.gift-image-action{display:flex;flex-wrap:nowrap;gap:6px;align-items:center}.gift-image-action.is-hidden{display:none}.gift-image-action .btn-outline{font-size:12px;padding:7px 9px}.gift-remove-image{color:#e88b7d;border-color:#e88b7d}.gift-add-next{width:34px;height:34px;padding:0!important;border-radius:50%;font-size:22px!important;line-height:1}.gift-remove-image{font-size:0!important;width:34px;height:34px;padding:0!important}.gift-remove-image::before{content:'🗑️';font-size:16px}.gift-add-next-control{order:-1;margin-bottom:2px}
   .gift-edit-images{display:flex;gap:8px;flex-wrap:wrap}
   @media(max-width:600px){.gift-image-row{justify-content:flex-start}.gift-edit-text-row{flex-direction:column}.gift-edit-text-row textarea{min-height:220px;font-size:16px}.gift-edit-text-row .btn-outline{width:100%}}
   /* CONTACT TEASER */
@@ -1848,6 +1848,15 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     image.removeAttribute('src');
     const input = document.querySelector(`input[onchange*="'${imageId}'"]`);
     if (input) input.value = '';
+    const action = document.querySelector(`.gift-image-action:has(button[onclick*="${imageId}"])`);
+    if (action) {
+      const actions = Array.from(action.parentElement.querySelectorAll('.gift-image-action'));
+      const index = actions.indexOf(action);
+      action.classList.toggle('is-hidden', index > 0);
+      action.classList.remove('has-image');
+      const plus = action.parentElement.querySelector('.gift-add-next-control');
+      if (plus) plus.style.display = '';
+    }
     refreshGiftImageVisibility();
     saveSiteData();
   }
@@ -1879,23 +1888,27 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     document.querySelectorAll('.gift-edit-images').forEach(container => {
       const actions = Array.from(container.querySelectorAll('.gift-image-action'));
       actions.forEach((action, index) => {
-        action.classList.toggle('is-hidden', index > 0 && !action.classList.contains('has-image'));
         const addButton = action.querySelector('button:not(.gift-remove-image)');
-        const input = action.querySelector('input[type="file"]') || document.getElementById((addButton?.getAttribute('onclick') || '').match(/giftPhotoInput[^']+/)?.[0]);
+        const match = addButton?.getAttribute('onclick')?.match(/getElementById\('([^']+)'\)/);
+        const input = match ? document.getElementById(match[1]) : null;
+        const imageMatch = action.querySelector('.gift-remove-image')?.getAttribute('onclick')?.match(/'([^']+)'/);
+        const image = imageMatch ? document.getElementById(imageMatch[1]) : null;
+        const hasImage = Boolean(image?.getAttribute('src'));
+        action.classList.toggle('is-hidden', index > 0 && !hasImage);
+        action.classList.toggle('has-image', hasImage);
         if (addButton) {
-          addButton.textContent = index === 0 ? 'Add image' : '＋';
-          addButton.classList.toggle('gift-add-next', index > 0);
+          addButton.textContent = index === 0 ? 'Add image' : 'Add image ' + (index + 1);
           addButton.onclick = () => input?.click();
         }
         const removeButton = action.querySelector('.gift-remove-image');
-        if (removeButton) removeButton.setAttribute('aria-label', 'Remove image');
+        if (removeButton) { removeButton.setAttribute('aria-label', 'Remove image'); removeButton.onclick = () => image && removeGiftImage(image.id); }
+        if (input) input.onchange = () => { action.classList.add('has-image'); handleGiftImageUpload(input, image?.id); const next = actions[index + 1]; if (next) next.classList.remove('is-hidden'); };
       });
-      if (!container.querySelector('.gift-add-next-control')) {
-        const plus = document.createElement('button');
-        plus.type = 'button'; plus.className = 'btn-outline gift-add-next-control gift-add-next'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Add another image');
-        plus.onclick = () => { const next = actions.find(action => action.classList.contains('is-hidden')); if (next) { next.classList.remove('is-hidden'); next.classList.add('has-image'); next.querySelector('button:not(.gift-remove-image)')?.click(); plus.style.display = actions[actions.length - 1].classList.contains('is-hidden') ? '' : 'none'; } };
-        container.appendChild(plus);
-      }
+      let plus = container.querySelector('.gift-add-next-control');
+      if (!plus) { plus = document.createElement('button'); plus.type = 'button'; plus.className = 'btn-outline gift-add-next-control gift-add-next'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Add another image'); container.appendChild(plus); }
+      plus.onclick = () => { const next = actions.find(action => action.classList.contains('is-hidden')); if (next) { next.classList.remove('is-hidden'); next.querySelector('button:not(.gift-remove-image)')?.click(); } if (!actions.some(action => action.classList.contains('is-hidden'))) plus.style.display = 'none'; };
+      plus.style.display = actions.some(action => action.classList.contains('is-hidden')) ? '' : 'none';
+      plus.classList.add('gift-add-next-control');
     });
   }
 
