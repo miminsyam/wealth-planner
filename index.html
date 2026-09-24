@@ -1877,9 +1877,14 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     const deleted = document.querySelector('.gift-edit-card.is-deleted');
     if (deleted) {
       deleted.classList.remove('is-deleted');
+      const column = deleted.dataset.editColumn;
+      const publicBlock = document.querySelectorAll('.gift-offer-block')[Number(column) - 1];
+      if (publicBlock) publicBlock.style.display = '';
+      const titleInput = document.getElementById(`edit_giftTitle${column}`);
+      if (titleInput && !titleInput.value.trim()) titleInput.value = `Gift Column ${column}`;
       return;
     }
-    alert('All available gift columns are already active.');
+    alert('All available gift columns are already active. Delete a column first to add it again.');
   }
   function renderGiftTexts(column, texts) {
     const list = document.getElementById(`giftTextList${column}`);
@@ -1923,6 +1928,13 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
 
   function openEditGift() {
     document.getElementById("edit_giftHeading").value = document.getElementById("giftHeading").textContent;
+    [1,2,3].forEach(column => {
+      const input = document.getElementById(`edit_giftTitle${column}`);
+      const heading = document.querySelector(`[data-edit-column="${column}"] h4`);
+      if (input && heading) {
+        input.addEventListener('input', () => { heading.textContent = input.value || `Gift Column ${column}`; }, { once: true });
+      }
+    });
     document.getElementById("edit_giftLimited").value = document.getElementById("giftLimited").textContent;
     document.getElementById("edit_giftStock").value = document.getElementById("giftStock").textContent;
     document.getElementById("edit_giftDesc").value = document.getElementById("giftDesc").textContent;
