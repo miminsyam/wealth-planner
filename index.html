@@ -874,8 +874,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       <h3 id="bookingModalTitle">Book an appointment</h3>
       <p class="muted" style="font-size:13px">Hi Hardy, I would like to book an appointment to find out more about your protection plans.</p>
       <div class="modal-field"><label for="bookingName">Name</label><input id="bookingName" type="text" autocomplete="name"></div>
-      <div class="modal-field"><label for="bookingDate">Preferred Date/Time</label><input id="bookingDate" type="datetime-local"></div>
-      <div class="modal-field"><label for="bookingPlan">I&apos;m interested in</label><input id="bookingPlan" type="text" readonly></div>
+  <div class="modal-field"><label for="bookingDate">Preferred Date/Time <span class="muted">(contoh: nama plan yang ditekan)</span></label><input id="bookingDate" type="datetime-local"></div>
       <div class="modal-field"><label for="bookingDob">Date of Birth (yy/mm/dd)</label><input id="bookingDob" type="text" inputmode="numeric" placeholder="yy/mm/dd"></div>
       <div class="modal-field"><label for="bookingMarital">Marital Status</label><select id="bookingMarital"><option>Single</option><option>Married</option><option>Pregnant</option></select></div>
       <div class="modal-field"><label for="bookingMedical">Medical History</label><select id="bookingMedical"><option>No</option><option>Yes</option></select></div>
@@ -1555,14 +1554,14 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
   }
 
   function openBookingModal(planName) {
-    document.getElementById('bookingPlan').value = planName || 'PruBSN protection plans';
+    document.getElementById('bookingModal').dataset.planName = planName || 'PruBSN protection plans';
     document.getElementById('bookingModal').classList.add('active');
   }
 
   function submitBooking() {
     const name = document.getElementById('bookingName').value.trim();
     const date = document.getElementById('bookingDate').value;
-    const plan = document.getElementById('bookingPlan').value;
+    const plan = document.getElementById('bookingModal').dataset.planName || 'PruBSN protection plans';
     const dob = document.getElementById('bookingDob').value.trim();
     const marital = document.getElementById('bookingMarital').value;
     const medical = document.getElementById('bookingMedical').value;
@@ -1570,7 +1569,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       alert('Please complete your name, preferred date/time and date of birth.');
       return;
     }
-    const message = `Hi Hardy, I would like to book an appointment to find out more about your protection plans.\\n\\nName: ${name}\\nPreferred Date/Time: ${date}\\n(I'm interested in ${plan})\\nDate of Birth (yy/mm/dd): ${dob}\\nMarital Status: ${marital}\\nMedical History: ${medical}`;
+    const message = `Hi Hardy, I would like to book an appointment to find out more about your protection plans.\\n\\nName: ${name}\\nPreferred Date/Time: ${date}\\nContoh-(${plan})\\nDate of Birth (yy/mm/dd): ${dob}\\nMarital Status: ${marital}\\nMedical History: ${medical}`;
     window.open(`https://wa.me/${OWNER.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
     closeModal('bookingModal');
   }
