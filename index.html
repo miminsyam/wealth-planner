@@ -1837,7 +1837,21 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
   window.setTimeout(refreshGiftImageVisibility, 0);
   window.setTimeout(refreshGiftImageVisibility, 800);
   window.setTimeout(refreshGiftImageVisibility, 1800);
-  window.setTimeout(() => document.querySelectorAll('.gift-image-wrap img').forEach(image => { if (image.complete && image.naturalWidth === 0) { image.removeAttribute('src'); image.alt = ''; image.closest('.gift-image-wrap')?.classList.add('empty'); } }), 2600);
+  function removeInvalidGiftImages() {
+    document.querySelectorAll('.gift-image-wrap img').forEach(image => {
+      if (!image.getAttribute('src') || (image.complete && image.naturalWidth === 0)) {
+        image.removeAttribute('src');
+        image.alt = '';
+        image.closest('.gift-image-wrap')?.classList.add('empty');
+      }
+    });
+  }
+  window.setTimeout(removeInvalidGiftImages, 2600);
+  let giftImageCleanupRuns = 0;
+  const giftImageCleanupTimer = window.setInterval(() => {
+    removeInvalidGiftImages();
+    if (++giftImageCleanupRuns >= 20) window.clearInterval(giftImageCleanupTimer);
+  }, 500);
   function handleGiftImageUpload(input, imageId) {
     const file = input.files && input.files[0];
     if (!file) return;
