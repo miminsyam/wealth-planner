@@ -228,7 +228,7 @@
   /* MODAL */
   .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
   .modal-overlay.active{display:flex}
-  .modal-box{background:var(--navy2);border:1px solid rgba(216,177,90,.35);border-radius:18px;padding:26px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto}
+  .modal-box{background:#000;border:1px solid rgba(216,177,90,.35);border-radius:18px;padding:26px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto}
   .modal-box h3{margin-top:0;color:var(--gold)}
   .modal-field{margin-bottom:14px}
   .modal-field label{display:block;font-weight:700;margin-bottom:6px;font-size:13px}
@@ -867,9 +867,22 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       <button class="btn primary" onclick="saveGift()">Save</button>
     </div>
   </div>
-</div>
+  </div>
 
-<script>
+  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+    <div class="modal-box">
+      <h3 id="bookingModalTitle">Book an appointment</h3>
+      <p class="muted" style="font-size:13px">Hi Hardy, I would like to book an appointment to find out more about your protection plans.</p>
+      <div class="modal-field"><label for="bookingName">Name</label><input id="bookingName" type="text" autocomplete="name"></div>
+  <div class="modal-field"><label for="bookingDate">Preferred Date/Time <span class="muted">(contoh: nama plan yang ditekan)</span></label><input id="bookingDate" type="datetime-local"></div>
+      <div class="modal-field"><label for="bookingDob">Date of Birth (yy/mm/dd)</label><input id="bookingDob" type="text" inputmode="numeric" placeholder="yy/mm/dd"></div>
+      <div class="modal-field"><label for="bookingMarital">Marital Status</label><select id="bookingMarital"><option>Single</option><option>Married</option><option>Pregnant</option></select></div>
+      <div class="modal-field"><label for="bookingMedical">Medical History</label><select id="bookingMedical"><option>No</option><option>Yes</option></select></div>
+      <div class="modal-actions"><button class="btn-outline" type="button" onclick="closeModal('bookingModal')">Cancel</button><button class="btn primary" type="button" onclick="submitBooking()">Send Booking</button></div>
+    </div>
+  </div>
+  
+  <script>
   const OWNER = {
     whatsappNumber: "60143966641",
     company: "Muqmeen Group",
@@ -1537,9 +1550,30 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       "Date of Birth (yy/mm/dd):\n" +
       "Marital Status: Single / Married / Pregnant\n" +
       "Medical History: No / Yes";
-    return encodeURIComponent(text);
+  return encodeURIComponent(text);
   }
 
+  function openBookingModal(planName) {
+    document.getElementById('bookingModal').dataset.planName = planName || 'PruBSN protection plans';
+    document.getElementById('bookingModal').classList.add('active');
+  }
+
+  function submitBooking() {
+    const name = document.getElementById('bookingName').value.trim();
+    const date = document.getElementById('bookingDate').value;
+    const plan = document.getElementById('bookingModal').dataset.planName || 'PruBSN protection plans';
+    const dob = document.getElementById('bookingDob').value.trim();
+    const marital = document.getElementById('bookingMarital').value;
+    const medical = document.getElementById('bookingMedical').value;
+    if (!name || !date || !dob) {
+      alert('Please complete your name, preferred date/time and date of birth.');
+      return;
+    }
+    const message = `Hi Hardy, I would like to book an appointment to find out more about your protection plans.\\n\\nName: ${name}\\nPreferred Date/Time: ${date}\\nContoh-(${plan})\\nDate of Birth (yy/mm/dd): ${dob}\\nMarital Status: ${marital}\\nMedical History: ${medical}`;
+    window.open(`https://wa.me/${OWNER.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    closeModal('bookingModal');
+  }
+  
   function renderPlans() {
     const container = document.getElementById("helpBarsContainer");
     container.innerHTML = featuredPlans.map(item => {
@@ -1618,7 +1652,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
           <p class="muted" style="font-size:13px">${escHtml(p.desc)}</p>
           <ul class="plan-features">${featureItems.map(f => `<li>${escHtml(f)}</li>`).join("")}</ul>
           <div class="plan-price">${escHtml(p.price)}</div>
-          <a class="btn primary" href="https://wa.me/${OWNER.whatsappNumber}?text=${waText}" target="_blank">Ask Me</a>
+          <a class="btn primary" href="#" onclick="openBookingModal('${escHtml(p.title).replace(/'/g, "\\'")}');return false;">Book It</a>
         </div>
       `;
     }).join("");
