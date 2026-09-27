@@ -1572,7 +1572,14 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       alert('Please complete your name, preferred date/time and date of birth.');
       return;
     }
-    const message = `Hi Hardy, I would like to book an appointment to find out more about your protection plans.\\nName: ${name}\\nPlan : ${plan}\\nPreferred Date/Time: ${date}\\nDate of Birth: ${dob}\\nMarital Status: ${marital}\\nMedical History: ${medical}`;
+    const formattedDate = date ? date.replace('T', ' ') : '';
+  const message = `Hi Hardy, I would like to book an appointment to find out more about your protection plans.
+Name: ${name}
+Plan : ${plan}
+Preferred Date/Time: ${formattedDate}
+Date of Birth: ${dob}
+Marital Status: ${marital}
+Medical History: ${medical}`;
     window.open(`https://wa.me/${OWNER.whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
     closeModal('bookingModal');
   }
