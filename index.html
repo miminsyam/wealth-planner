@@ -876,7 +876,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
 <div class="modal-field"><label for="bookingName">Name</label><input id="bookingName" type="text" autocomplete="name"></div>
   <div class="modal-field"><label for="bookingPlan">Plan</label><input id="bookingPlan" type="text" readonly></div>
   <div class="modal-field"><label for="bookingDate">Preferred Date/Time</label><input id="bookingDate" type="datetime-local"></div>
-  <div class="modal-field"><label for="bookingDob">Date of Birth</label><input id="bookingDob" type="text" inputmode="numeric" placeholder="yy/mm/dd"></div>
+  <div class="modal-field"><label for="bookingDob">Date of Birth</label><input id="bookingDob" type="date" autocomplete="bday" max="2099-12-31"></div>
       <div class="modal-field"><label for="bookingMarital">Marital Status</label><select id="bookingMarital"><option>Single</option><option>Married</option><option>Pregnant</option></select></div>
       <div class="modal-field"><label for="bookingMedical">Medical History</label><select id="bookingMedical"><option>No</option><option>Yes</option></select></div>
       <div class="modal-actions"><button class="btn-outline" type="button" onclick="closeModal('bookingModal')">Cancel</button><button class="btn primary" type="button" onclick="submitBooking()">Send Booking</button></div>
