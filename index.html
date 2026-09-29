@@ -243,6 +243,40 @@
   .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
 
   @media(max-width:800px){.links{display:none}.badges{grid-template-columns:repeat(3,1fr)}}
+
+  /* PLANS PAGE — reference-inspired visual treatment only; content remains unchanged */
+  #plans.section{position:relative;overflow:hidden;min-height:calc(100vh - 90px);padding:clamp(42px,7vw,88px) clamp(20px,5vw,72px) 96px;background:#020202}
+  #plans.section::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(212,175,55,.08),transparent 28%),linear-gradient(315deg,rgba(212,175,55,.05),transparent 32%);opacity:.9}
+  #plans.section::after{content:"";position:absolute;right:-150px;top:80px;width:360px;height:360px;border:1px solid rgba(212,175,55,.28);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);transform:rotate(15deg);pointer-events:none}
+  #plans.section > *{position:relative;z-index:1}
+  #plans .back-link{display:inline-flex;align-items:center;margin-bottom:42px;color:#d4af37;font-weight:700;letter-spacing:.2px}
+  #plans .tag{font-size:12px;letter-spacing:5px;text-transform:uppercase;color:#d4af37;margin-bottom:24px}
+  #plans h2{font-size:clamp(42px,5.2vw,74px);line-height:1.02;letter-spacing:-2px;margin:0 0 22px;color:#fff;font-weight:800}
+  #plans > .muted{max-width:700px;font-size:clamp(17px,2vw,24px);line-height:1.5;color:#b9b9b9;margin-bottom:38px}
+  #plans .plans-grid{grid-template-columns:repeat(4,minmax(240px,1fr));gap:30px;margin-top:0}
+  #plans .plan-card{min-height:620px;border-radius:26px;padding:36px 36px 30px;background:linear-gradient(180deg,#fff 0%,#f8f8f8 100%);box-shadow:0 18px 45px rgba(0,0,0,.32);transition:transform .2s ease,box-shadow .2s ease}
+  #plans .plan-card:hover{transform:translateY(-6px);box-shadow:0 26px 55px rgba(212,175,55,.18)}
+  #plans .plan-icon{font-size:42px;line-height:1;margin-bottom:20px}
+  #plans .plan-tag{display:block;width:100%;margin:0 0 26px;padding:10px 16px;border-radius:999px;background:#fff2d7;color:#af7f24;font-size:14px;letter-spacing:.1px}
+  #plans .plan-card h3{font-size:clamp(22px,2vw,29px);line-height:1.18;color:#0d1117;margin:0 0 26px;min-height:68px}
+  #plans .plan-card p{color:#c5c5c5;font-size:16px;line-height:1.55;min-height:74px;margin:0 0 28px}
+  #plans .plan-features{font-size:16px;color:#596a80;margin:0 0 30px}
+  #plans .plan-features li{padding:10px 0;border-top:1px solid #e6e6e6}
+  #plans .plan-price{font-size:23px;color:#111;margin-top:auto;margin-bottom:26px}
+  #plans .plan-card .btn{width:100%;padding:15px 18px;border-radius:3px;background:#d4af37;color:#111;font-size:14px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+  #plans .plan-card .btn:hover{background:#edc94a;color:#111}
+  @media(max-width:1100px){#plans .plans-grid{grid-template-columns:repeat(2,minmax(250px,1fr))}}
+  @media(max-width:600px){
+    #plans.section{padding:32px 18px 70px}
+    #plans .back-link{margin-bottom:34px}
+    #plans .tag{font-size:10px;letter-spacing:3px;margin-bottom:16px}
+    #plans h2{font-size:42px;letter-spacing:-1px}
+    #plans > .muted{font-size:16px;margin-bottom:28px}
+    #plans .plans-grid{grid-template-columns:1fr;gap:18px}
+    #plans .plan-card{min-height:0;padding:28px 24px 25px;border-radius:22px}
+    #plans .plan-card h3{min-height:auto;font-size:24px}
+    #plans .plan-card p{min-height:auto;font-size:15px}
+  }
 </style>
 </head>
 <body>
