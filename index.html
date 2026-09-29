@@ -94,7 +94,7 @@
   /* FREE GIFT */
   .gift-section{background:linear-gradient(180deg,#000,#0c0c0c);padding:70px 6%;text-align:center}
   .gift-image-wrap{width:100%;max-width:320px;aspect-ratio:1/1;margin:24px auto 0;border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#111;display:flex;align-items:center;justify-content:center}.gift-image-wrap.empty{display:none}.gift-image-wrap.empty img{display:none}
-  .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+  .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block;touch-action:pan-x}.gift-image-wrap{overscroll-behavior-y:contain}
   .gift-stock{color:var(--gold);font-weight:700;font-size:14px;margin:10px 0 14px}
   .gift-limited{color:#e8543a;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:4px 0}
   .gift-offers{max-width:700px;margin:30px auto 0;text-align:left}
@@ -1042,21 +1042,37 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
     let pulling = false;
     let refreshing = false;
     const threshold = 72;
+    let imageStartX = 0;
+    let imageStartY = 0;
+    let imageGesture = false;
     document.addEventListener('touchstart', event => {
+      const image = event.target.closest('.gift-image-wrap');
+      if (image && event.touches.length === 1) {
+        imageStartX = event.touches[0].clientX;
+        imageStartY = event.touches[0].clientY;
+        imageGesture = true;
+      }
       if (window.scrollY <= 0 && event.touches.length === 1) {
         startY = event.touches[0].clientY;
         pulling = true;
       }
     }, { passive: true });
     document.addEventListener('touchmove', event => {
+      if (imageGesture && event.touches.length === 1) {
+        const dx = event.touches[0].clientX - imageStartX;
+        const dy = event.touches[0].clientY - imageStartY;
+        if (Math.abs(dy) > Math.abs(dx)) event.preventDefault();
+        return;
+      }
       if (!pulling || refreshing || window.scrollY > 0) return;
       const distance = Math.max(0, event.touches[0].clientY - startY);
       if (distance > 8) {
         indicator.classList.add('visible');
         indicator.textContent = distance >= threshold ? 'Release to refresh' : 'Pull to refresh';
       }
-    }, { passive: true });
+    }, { passive: false });
     document.addEventListener('touchend', event => {
+      imageGesture = false;
       if (!pulling || refreshing) return;
       const distance = Math.max(0, (event.changedTouches[0]?.clientY || startY) - startY);
       pulling = false;
@@ -1069,7 +1085,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
         indicator.classList.remove('visible');
       }
     }, { passive: true });
-    document.addEventListener('touchcancel', () => { pulling = false; indicator.classList.remove('visible'); }, { passive: true });
+    document.addEventListener('touchcancel', () => { imageGesture = false; pulling = false; indicator.classList.remove('visible'); }, { passive: false });
   })();
 
   // Default profile photo (owner's uploaded photo, embedded as base64)
