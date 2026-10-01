@@ -168,13 +168,14 @@
   .plans-grid .plan-card{background:linear-gradient(145deg,#111 0%,#080808 100%);color:#f7f3e8;border:1px solid rgba(212,175,55,.22);border-radius:18px;padding:26px 20px 20px;min-height:360px;box-shadow:0 14px 34px rgba(0,0,0,.28);display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
   .plans-grid .plan-card:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.7);box-shadow:0 18px 40px rgba(0,0,0,.45)}
   .plans-grid .plan-icon{font-size:42px;line-height:1;color:var(--gold);filter:grayscale(1) sepia(1) saturate(4);margin-bottom:22px}
-  .plans-grid .plan-tag{display:none}
+  .plans-grid .plan-tag{display:inline-block;background:rgba(212,175,55,.12);color:var(--gold);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin:8px 0}
   .plans-grid .plan-card h3{font-size:18px;line-height:1.25;margin:0 0 14px;color:#fff}
   .plans-grid .plan-card>p{font-size:13px!important;line-height:1.55;color:#c9c4b9!important;min-height:62px;margin:0}
-  .plans-grid .plan-features{display:none}
-  .plans-grid .plan-price{display:none}
-  .plans-grid .plan-card .btn{margin-top:auto;background:transparent;border:0;color:var(--gold);font-size:0;padding:10px;width:44px;height:38px}
-  .plans-grid .plan-card .btn::after{content:'→';font-size:28px;line-height:1}
+  .plans-grid .plan-features{display:block;list-style:none;width:100%;padding:0;margin:14px 0;font-size:13px;color:#c9c4b9;text-align:left}
+  .plans-grid .plan-features li{padding:6px 0;border-top:1px solid rgba(255,255,255,.12)}
+  .plans-grid .plan-price{display:block;font-size:17px;margin:10px 0;color:#fff}
+  .plans-grid .plan-card .btn{margin-top:auto;background:var(--gold);border:1px solid var(--gold);color:#080808;font-size:12px;padding:11px 16px;width:100%;height:auto;border-radius:8px;text-align:center}
+  .plans-grid .plan-card .btn::after{content:none}
   @media(max-width:900px){.plans-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:520px){.plans-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.plans-grid .plan-card{min-height:270px;padding:20px 12px 14px;border-radius:14px}.plans-grid .plan-icon{font-size:32px;margin-bottom:16px}.plans-grid .plan-card h3{font-size:14px}.plans-grid .plan-card>p{font-size:11px!important;min-height:54px}}
   .plan-card{background:#fff;color:var(--navy);border-radius:18px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08);display:flex;flex-direction:column}
