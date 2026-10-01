@@ -17,7 +17,11 @@
   .links{display:flex;flex-wrap:wrap;align-items:center}
   nav a{color:white;text-decoration:none;margin-left:20px;font-size:12.5px;cursor:pointer;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase} nav a:hover{color:var(--gold)}
   .page-section{display:none}
-  .page-section.active{display:block}
+  .page-section.active{display:block;animation:presentationSlideIn .72s cubic-bezier(.22,1,.36,1) both}
+  @keyframes presentationSlideIn{from{opacity:0;transform:translate3d(0,34px,0);filter:blur(3px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+  .page-section.active .hero-inner,.page-section.active .about-grid,.page-section.active .section>h2,.page-section.active .section>p,.page-section.active .plans-grid,.page-section.active .gift-section{animation:presentationContentIn .8s .12s cubic-bezier(.22,1,.36,1) both}
+  @keyframes presentationContentIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @media(prefers-reduced-motion:reduce){.page-section.active,.page-section.active .hero-inner,.page-section.active .about-grid,.page-section.active .section>h2,.page-section.active .section>p,.page-section.active .plans-grid,.page-section.active .gift-section{animation:none}}
   .section{padding:70px 0}
   .light{background:var(--cream);color:#111}
   .tag{color:var(--gold);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:12.5px}
@@ -1158,9 +1162,12 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
 
   // Instant section switching
   function showSection(id) {
-    document.querySelectorAll(".page-section").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    window.scrollTo(0, 0);
+  const current = document.querySelector('.page-section.active');
+  if (current?.id === id) return;
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  const next = document.getElementById(id);
+  next.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Mobile visitor navigation menu (separate from Owner Settings)
