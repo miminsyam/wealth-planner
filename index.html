@@ -8,8 +8,8 @@
   :root{--navy:#050505;--navy2:#161616;--gold:#d4af37;--cream:#ffffff;--white:#fff;--muted:#c9c9c9;--field:#141414;--field-border:rgba(212,175,55,.4)}
   *{box-sizing:border-box}
   html{background:#000}
-  body{margin:0;font-family:'Helvetica Neue',Arial,Helvetica,sans-serif;color:var(--white);background:#000;line-height:1.6}
-  .app-shell{width:100%;background:var(--navy);min-height:100vh;position:relative;overflow-x:hidden}
+  body{margin:0;font-family:'Helvetica Neue',Arial,Helvetica,sans-serif;color:var(--white);background:#000 url('/front-background.jpg') center top / cover fixed no-repeat;line-height:1.6}
+  .app-shell{width:100%;background:linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.78)),url('/front-background.jpg') center top / cover fixed no-repeat;min-height:100vh;position:relative;overflow-x:hidden}
   .pull-refresh-indicator{position:fixed;top:8px;left:50%;z-index:100;transform:translate(-50%,-70px);opacity:0;display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(212,175,55,.6);border-radius:999px;background:#111;color:var(--gold);font-size:12px;transition:transform .2s ease,opacity .2s ease;pointer-events:none}.pull-refresh-indicator.visible{transform:translate(-50%,0);opacity:1}.pull-refresh-indicator.refreshing{animation:pullRefreshSpin 1s linear infinite}@keyframes pullRefreshSpin{from{filter:brightness(1)}50%{filter:brightness(1.6)}to{filter:brightness(1)}}
   nav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.97);border-bottom:1px solid rgba(212,175,55,.25);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 6%;flex-wrap:wrap}
   .brand{font-weight:800;letter-spacing:2px;font-size:15px}.brand span{color:var(--gold)}
