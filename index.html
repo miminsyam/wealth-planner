@@ -60,6 +60,18 @@
   @keyframes heroIconFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}
   @media(max-width:700px){.hero-icon-button{width:76px;min-height:62px;padding:7px 4px;border-radius:12px}.hero-icon-symbol{font-size:21px}.hero-icon-label{font-size:8px}.hero-icon-button:nth-child(1){top:10%;left:3%}.hero-icon-button:nth-child(2){top:7%;left:28%}.hero-icon-button:nth-child(3){top:9%;right:27%}.hero-icon-button:nth-child(4){top:25%;right:2%}.hero-icon-button:nth-child(5){bottom:10%;left:4%}.hero-icon-button:nth-child(6){bottom:7%;left:29%}.hero-icon-button:nth-child(7){bottom:9%;right:4%}}
   @media(prefers-reduced-motion:reduce){.hero-icon-button{animation:none}}
+  /* Refined first-page composition: keep the reference image calm and the navigation in one readable dock. */
+  .hero{min-height:clamp(620px,88vh,860px);align-items:center;background:#050505}
+  .hero-reference-image{opacity:.46;object-position:center center;filter:saturate(.62) contrast(1.12)}
+  .hero-bg{background:radial-gradient(circle at center,rgba(0,0,0,.18),rgba(0,0,0,.7) 72%),linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.82))}
+  .hero-inner{width:min(680px,calc(100% - 40px));padding:76px 24px 180px}
+  .hero-icon-nav{inset:auto 0 34px;display:flex;justify-content:center;align-items:stretch;gap:10px;padding:0 20px;pointer-events:none}
+  .hero-icon-button,.hero-icon-button:nth-child(1),.hero-icon-button:nth-child(2),.hero-icon-button:nth-child(3),.hero-icon-button:nth-child(4),.hero-icon-button:nth-child(5),.hero-icon-button:nth-child(6),.hero-icon-button:nth-child(7){position:relative;inset:auto;flex:1 1 0;width:auto;min-width:0;max-width:116px;min-height:78px;padding:12px 6px;border-radius:14px;background:rgba(8,8,8,.82);border-color:rgba(212,175,55,.32);animation:heroIconFloat 4s ease-in-out infinite}
+  .hero-icon-button:nth-child(2){animation-delay:-.5s}.hero-icon-button:nth-child(3){animation-delay:-1s}.hero-icon-button:nth-child(4){animation-delay:-1.5s}.hero-icon-button:nth-child(5){animation-delay:-2s}.hero-icon-button:nth-child(6){animation-delay:-2.5s}.hero-icon-button:nth-child(7){animation-delay:-3s}
+  .hero-icon-button:hover,.hero-icon-button:focus-visible{transform:translateY(-6px) scale(1.03);background:rgba(24,20,10,.94)}
+  .hero-icon-symbol{font-size:24px}.hero-icon-label{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  @media(max-width:700px){.hero{min-height:680px}.hero-inner{padding:58px 18px 168px}.hero-icon-nav{gap:6px;padding:0 10px;flex-wrap:wrap}.hero-icon-button,.hero-icon-button:nth-child(1),.hero-icon-button:nth-child(2),.hero-icon-button:nth-child(3),.hero-icon-button:nth-child(4),.hero-icon-button:nth-child(5),.hero-icon-button:nth-child(6),.hero-icon-button:nth-child(7){flex:0 0 calc((100% - 12px)/3);max-width:none;min-height:62px;padding:8px 4px}.hero-icon-button:last-child{flex-basis:calc((100% - 12px)/3)}.hero-icon-symbol{font-size:20px}.hero-icon-label{font-size:9px}}
+  @media(max-width:380px){.hero-icon-nav{gap:5px}.hero-icon-button,.hero-icon-button:nth-child(1),.hero-icon-button:nth-child(2),.hero-icon-button:nth-child(3),.hero-icon-button:nth-child(4),.hero-icon-button:nth-child(5),.hero-icon-button:nth-child(6),.hero-icon-button:nth-child(7){flex-basis:calc((100% - 10px)/3);min-height:58px}.hero-icon-label{font-size:8px}}
   .hero-bg{position:absolute;inset:0;background:
       radial-gradient(circle at 20% 20%,rgba(212,175,55,.12),transparent 40%),
       radial-gradient(circle at 80% 70%,rgba(212,175,55,.10),transparent 45%),
