@@ -48,10 +48,8 @@
 
   /* HERO (reference-style: tagline, huge word, subtitle, CTA) */
   .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;text-align:center;background:#000;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;background:
-      radial-gradient(circle at 20% 20%,rgba(212,175,55,.12),transparent 40%),
-      radial-gradient(circle at 80% 70%,rgba(212,175,55,.10),transparent 45%),
-      linear-gradient(180deg,#000 0%,#0c0c0c 60%,#000 100%);}
+  .hero-bg{position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.68)),url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0214-IaRrl9KNLmVTtxaSYkB8QP5xC6dXu2.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:saturate(.9);}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,rgba(0,0,0,.28) 72%,rgba(0,0,0,.58) 100%);}
   .hero-mountains{position:absolute;bottom:0;left:0;width:100%;opacity:.5}
   .hero-inner{position:relative;z-index:2;padding:20px 6%;max-width:800px}
   .hero .tag{display:block;margin-bottom:10px}
