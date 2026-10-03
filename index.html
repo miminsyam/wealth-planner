@@ -47,15 +47,15 @@
   .mobile-nav a:last-child{border-bottom:none}
 
   /* HERO (reference-style: tagline, huge word, subtitle, CTA) */
-  .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#000 0%,#080705 55%,#241a06 100%);overflow:hidden}
-  .hero-bg{position:absolute;inset:-4px;background-image:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.68)),url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0214-IaRrl9KNLmVTtxaSYkB8QP5xC6dXu2.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:blur(3px) saturate(.9);transform:scale(1.02);}
+  .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:flex-start;text-align:left;background:#000;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.88) 42%,rgba(0,0,0,.38) 100%),url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0213-36oiUHgYok2NxkPNOA6mfS2V8WUyDe.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat;filter:saturate(.55);transform:scale(1.01);}
   .hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,rgba(0,0,0,.28) 72%,rgba(0,0,0,.58) 100%);}
   .hero-mountains{position:absolute;bottom:0;left:0;width:100%;opacity:.5}
-  .hero-inner{position:relative;z-index:2;padding:20px 6%;max-width:800px}
+  .hero-inner{position:relative;z-index:2;padding:72px 6%;max-width:720px}.hero-word{font-size:clamp(46px,7vw,88px);font-weight:900;letter-spacing:2px;margin:0;color:#fff;line-height:.98;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.45)}.hero-sub{max-width:560px}.hero .buttons{justify-content:flex-start}
   .hero .tag{display:block;margin-bottom:10px}
-  .hero-word{font-size:46px;font-weight:900;letter-spacing:3px;margin:0;color:var(--gold);line-height:1}
+  .hero-word{font-size:clamp(46px,7vw,88px);font-weight:900;letter-spacing:2px;margin:0;color:#fff;line-height:.98;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.45)}
   .hero-sub{color:var(--muted);font-size:15px;letter-spacing:1px;margin-top:14px}
-  .hero .buttons{justify-content:center}
+  .hero .buttons{justify-content:flex-start}
 
   /* ABOUT ME / PROFILE POSTER */
   .about-grid{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1.15fr;gap:50px;align-items:center;padding:80px 6%;background:#000;max-width:1100px;margin:0 auto}
@@ -307,7 +307,7 @@
     </svg>
     <div class="hero-inner">
       <span class="tag">Ambition Is The First Step Towards</span>
-      <h1 class="hero-word" id="heroTitle">SUCCESS</h1>
+      <h1 class="hero-word" id="heroTitle">WEALTH<br>PLANNER</h1>
       <p class="hero-sub" id="slogan">Helping you choose takaful &amp; wealth protection that fits your budget &amp; family needs — a relaxed, transparent, no-pressure consultation.</p>
       <div class="buttons">
         <a class="btn primary" onclick="showSection('apply')">Book Now</a>
