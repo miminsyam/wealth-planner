@@ -9,7 +9,7 @@
   *{box-sizing:border-box}
   html{background:#000}
   body{margin:0;font-family:'Helvetica Neue',Arial,Helvetica,sans-serif;color:var(--white);background:#000;line-height:1.6}
-  .app-shell{width:100%;background:#000;min-height:100vh;position:relative;overflow-x:hidden}
+  .app-shell{width:100%;background:#090909;min-height:100vh;position:relative;overflow-x:hidden}
   .pull-refresh-indicator{position:fixed;top:8px;left:50%;z-index:100;transform:translate(-50%,-70px);opacity:0;display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(212,175,55,.6);border-radius:999px;background:#111;color:var(--gold);font-size:12px;transition:transform .2s ease,opacity .2s ease;pointer-events:none}.pull-refresh-indicator.visible{transform:translate(-50%,0);opacity:1}.pull-refresh-indicator.refreshing{animation:pullRefreshSpin 1s linear infinite}@keyframes pullRefreshSpin{from{filter:brightness(1)}50%{filter:brightness(1.6)}to{filter:brightness(1)}}
   nav{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.97);border-bottom:1px solid rgba(212,175,55,.25);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 6%;flex-wrap:wrap}
   .brand{font-weight:800;letter-spacing:2px;font-size:15px}.brand span{color:var(--gold)}
@@ -47,10 +47,10 @@
   .mobile-nav a:last-child{border-bottom:none}
 
   /* HERO (reference-style: tagline, huge word, subtitle, CTA) */
-  .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:flex-start;text-align:left;background:#000;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;background-image:url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0214-IaRrl9KNLmVTtxaSYkB8QP5xC6dXu2.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat;}
+  .hero{position:relative;min-height:78vh;display:flex;align-items:center;justify-content:flex-start;text-align:left;background:#0b0b0b;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background-image:url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0214-IaRrl9KNLmVTtxaSYkB8QP5xC6dXu2.jpeg');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:1;}
   
-  .hero-mountains{position:absolute;bottom:0;left:0;width:100%;opacity:.5}
+  .hero-mountains{display:none}
   .hero-inner{position:relative;z-index:2;padding:72px 6%;max-width:720px}.hero-word{font-size:clamp(46px,7vw,88px);font-weight:900;letter-spacing:2px;margin:0;color:#fff;line-height:.98;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.45)}.hero-sub{max-width:560px}.hero .buttons{justify-content:flex-start}
   .hero .tag{display:block;margin-bottom:10px}
   .hero-word{font-size:clamp(46px,7vw,88px);font-weight:900;letter-spacing:2px;margin:0;color:#fff;line-height:.98;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.45)}
@@ -1788,7 +1788,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       <div class="plan-edit-row">
         <div class="modal-field"><label>Customer Name</label><input type="text" class="tm-name" value="${escHtml(item.name)}" placeholder="e.g. Nurul Ain, 32"></div>
         <div class="modal-field"><label>Role / Location</label><input type="text" class="tm-role" value="${escHtml(item.role)}" placeholder="e.g. Teacher · Selangor"></div>
-        <div class="modal-field"><label>Rating</label><input type="text" class="tm-rating" value="${escHtml(item.rating || '★★★★★')}" placeholder="★★★★★"></div>
+        <div class="modal-field"><label>Rating</label><input type="text" class="tm-rating" value="${escHtml(item.rating || '★★★★★')}" placeholder="★★★���★"></div>
         <div class="modal-field"><label>Feedback</label><textarea class="tm-quote">${escHtml(item.quote)}</textarea></div>
         <button type="button" class="btn-outline" onclick="this.closest('.plan-edit-row').remove()">🗑️ Remove This Feedback</button>
       </div>
