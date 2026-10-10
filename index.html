@@ -98,13 +98,24 @@ p,.page-section.active .plans-grid,.page-section.active .gift-section{animation:
   .hex-frame .hex-inner{position:absolute;inset:3px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);overflow:hidden;background:#fff}
   .hex-frame .hex-inner img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
 
-  /* HOW I CAN HELP (teaser — full-width gradient bars) */
-  .help-section{background:linear-gradient(180deg,#0c0c0c,#000);padding:80px 6%;text-align:center;position:relative}
-  .help-bar{background:linear-gradient(90deg,#000,var(--gold));padding:28px 32px;text-align:left;margin-top:20px}
-  .help-bar h3{margin:0 0 10px;font-size:19px}
-  .help-bar p{color:rgba(255,255,255,.85);font-size:14px;max-width:720px;margin:0 0 14px}
-  .help-bar .price{color:#ffe27a;font-weight:800;font-size:15px}
-  .help-bar-cta{text-align:center;margin:16px 0 6px}
+  /* HOW I CAN HELP — honeycomb arrangement from the reference */
+  .help-section{background:radial-gradient(circle at 50% 28%,rgba(212,175,55,.1),transparent 34%),linear-gradient(180deg,#0c0c0c,#000);padding:80px 6% 110px;text-align:center;position:relative;overflow:hidden}
+  #helpBarsContainer{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 18px;max-width:1060px!important;margin:48px auto 0!important;align-items:center;text-align:center!important}
+  .featured-hex{position:relative;isolation:isolate;min-height:330px;display:flex;align-items:center;justify-content:center;padding:42px 34px;color:#fff;transition:transform .3s ease,filter .3s ease}
+  .featured-hex::before,.featured-hex::after{content:"";position:absolute;inset:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+  .featured-hex::before{background:linear-gradient(145deg,#f4d878 0%,#9a721f 42%,#2b1d05 100%);z-index:-2}
+  .featured-hex::after{inset:2px;background:linear-gradient(155deg,#202020,#090909 72%);z-index:-1}
+  .featured-hex:hover{transform:translateY(-8px) scale(1.03);filter:drop-shadow(0 18px 22px rgba(212,175,55,.18))}
+  .featured-hex .help-bar{background:transparent;padding:0;margin:0;max-width:220px;text-align:center}
+  .featured-hex .help-bar h3{margin:0 0 12px;font-size:18px;line-height:1.2;text-transform:uppercase;letter-spacing:1px}
+  .featured-hex .help-bar p{color:rgba(255,255,255,.78);font-size:13px;line-height:1.5;margin:0 auto 12px}
+  .featured-hex .help-bar .price{color:#ffe27a;font-weight:800;font-size:14px}
+  .featured-hex .help-bar-cta{margin:16px 0 0}
+  .featured-hex .btn-gradient{padding:10px 18px;font-size:11px}
+  .featured-hex:nth-child(2){transform:translateY(92px)}
+  .featured-hex:nth-child(2):hover{transform:translateY(84px) scale(1.03)}
+  @media(max-width:800px){#helpBarsContainer{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 4px;margin-top:30px!important}.featured-hex{min-height:260px;padding:32px 22px}.featured-hex:nth-child(2){transform:none}.featured-hex:nth-child(2):hover{transform:translateY(-8px) scale(1.03)}}
+  @media(max-width:520px){#helpBarsContainer{grid-template-columns:1fr;gap:18px}.featured-hex{width:min(100%,330px);min-height:300px;margin:0 auto}.featured-hex:nth-child(2){transform:none}.featured-hex .help-bar h3{font-size:17px}}
 
   /* FREE GIFT */
   .gift-section{background:linear-gradient(180deg,#000,#0c0c0c);padding:70px 6%;text-align:center}
@@ -3074,26 +3085,24 @@ ${escHtml(item.desc)}</textarea
     container.innerHTML = featuredPlans.map(item =
  {
       const waText = buildPlanWaMessage(item.title);
-      return `
-        <div class="help-bar"
-
-          <h3
-${escHtml(item.title)}</h3
-
-          <p
-${escHtml(item.desc)}</p
-
-          <div class="price"
-${escHtml(item.price)}</div
-
-        </div
-
-        <div class="help-bar-cta"
-<a class="btn-gradient" href="https://wa.me/${OWNER.whatsappNumber}?text=${waText}" target="_blank" style="font-style:italic"
-Book It</a
-</div
-
-      `;
+  return `
+  <article class="featured-hex">
+    <div>
+      <div class="help-bar"
+      <h3
+      ${escHtml(item.title)}</h3
+      <p
+      ${escHtml(item.desc)}</p
+      <div class="price"
+      ${escHtml(item.price)}</div
+      </div
+      <div class="help-bar-cta"
+      <a class="btn-gradient" href="https://wa.me/${OWNER.whatsappNumber}?text=${waText}" target="_blank" style="font-style:italic"
+      Book It</a
+      </div
+    </div>
+  </article>
+  `;
     }).join("");
   }
 
