@@ -575,32 +575,26 @@ Prudential BSN</a
   </div
 
 
-  <!-- HOW I CAN HELP / FEATURED PLANS --
+  <!-- HOW I CAN HELP / FEATURED PLANS -->
 
-  <div class="help-section"
+  <div class="help-section">
 
-    <div class="tag"
-How I Can Help You</div
+    <div class="tag">How I Can Help You</div>
 
-    <h2
-Featured plans</h2
+    <h2>Featured plans</h2>
 
+    <div id="helpBarsContainer" style="max-width:900px;margin:0 auto;text-align:left"></div>
 
-    <div id="helpBarsContainer" style="max-width:900px;margin:0 auto;text-align:left"
-</div
+    <div class="buttons" style="justify-content:center;margin-top:34px">
 
+      <a class="btn secondary" onclick="showSection('plans')">More Services</a>
 
-    <div class="buttons" style="justify-content:center;margin-top:34px"
+    </div>
 
-      <a class="btn secondary" onclick="showSection('plans')"
-More Services</a
-
-    </div
-
-  </div
+  </div>
 
 
-  <!-- FREE GIFT --
+  <!-- FREE GIFT -->
 
   <div class="gift-section"
 
@@ -3082,27 +3076,22 @@ ${escHtml(item.desc)}</textarea
   
   function renderPlans() {
     const container = document.getElementById("helpBarsContainer");
-    container.innerHTML = featuredPlans.map(item =
- {
+    container.innerHTML = featuredPlans.map(item => {
       const waText = buildPlanWaMessage(item.title);
-  return `
-  <article class="featured-hex">
-    <div>
-      <div class="help-bar"
-      <h3
-      ${escHtml(item.title)}</h3
-      <p
-      ${escHtml(item.desc)}</p
-      <div class="price"
-      ${escHtml(item.price)}</div
-      </div
-      <div class="help-bar-cta"
-      <a class="btn-gradient" href="https://wa.me/${OWNER.whatsappNumber}?text=${waText}" target="_blank" style="font-style:italic"
-      Book It</a
-      </div
-    </div>
-  </article>
-  `;
+      return `
+        <article class="featured-hex">
+          <div>
+            <div class="help-bar">
+              <h3>${escHtml(item.title)}</h3>
+              <p>${escHtml(item.desc)}</p>
+              <div class="price">${escHtml(item.price)}</div>
+            </div>
+            <div class="help-bar-cta">
+              <a class="btn-gradient" href="https://wa.me/${OWNER.whatsappNumber}?text=${waText}" target="_blank" rel="noopener noreferrer" style="font-style:italic">Book It</a>
+            </div>
+          </div>
+        </article>
+      `;
     }).join("");
   }
 
