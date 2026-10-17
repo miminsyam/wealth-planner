@@ -369,7 +369,7 @@ footer>*:not(.hexlayer){position:relative;z-index:2}
 /* hl-fm: lapisan hexagon footer (semua saiz skrin), diletak di bawah tulisan */
 footer>.hexlayer:not(.hl-fm){display:none!important}
 footer>.hexlayer.hl-fm{display:block;position:absolute;left:0;top:auto;bottom:0;width:100%;height:auto;max-width:none}
-@media(min-width:901px){footer{padding-bottom:54vw!important}}
+@media(min-width:901px){footer{padding-bottom:40vw!important}}
 /* ===== TABLET-MENEGAK & PHONE (<=900px): ikut gambar rujukan (lebar rujukan 823; semua dalam vw) ===== */
 @media(max-width:900px){
   /* HERO */
@@ -410,13 +410,32 @@ footer>.hexlayer.hl-fm{display:block;position:absolute;left:0;top:auto;bottom:0;
   .help-section>.hexlayer{left:-20.9vw!important;width:141.8vw!important;max-width:none}
   .about-grid .socials{margin-top:0!important}
   /* FOOTER: hexagon di bawah (macam muka surat 8 PDF), tidak di belakang tulisan */
-  footer{padding-bottom:62vw!important;overflow:hidden}
+  footer{padding-bottom:41vw!important;overflow:hidden}
+  footer #footerCopyright{display:block;max-width:74vw;margin-left:auto!important;margin-right:auto!important}
   footer>.hexlayer:not(.hl-fm){display:none!important}
   footer>.hexlayer.hl-fm{display:block;position:absolute;left:-7.5vw!important;top:auto!important;bottom:0!important;width:115vw!important;max-width:none;height:auto}
 }
 /* ===== END TABLET-MENEGAK & PHONE ===== */
 /* Disclaimer bahagian hadiah sahaja warna merah; disclaimer footer kekal warna asal */
 .gift-disclaimer,.gift-disclaimer strong{color:#e8543a!important}
+/* "Our Services" sedikit lebih besar */
+@media(min-width:901px){
+  .services-tag{font-size:2.7vw}
+  .services-list li{font-size:1.5vw}
+}
+@media(max-width:900px){
+  .services-tag{font-size:max(3.9vw,16.5px)}
+  .services-list li{font-size:max(2.15vw,13px)}
+}
+/* Kurangkan ruang kosong di bahagian Contact dan footer */
+@media(max-width:900px){
+  .contact-teaser{padding:44px 6% 28px!important}
+  footer{padding-top:34px}
+}
+/* iPad menegak: hexagon footer tak mengena hujung ayat disclaimer */
+@media(min-width:561px) and (max-width:900px){
+  footer{padding-bottom:52vw!important}
+}
 /* ===== END DESIGN OVERRIDES ===== */
 
 
