@@ -97,7 +97,7 @@
   /* FREE GIFT */
   .gift-section{background:linear-gradient(180deg,#000,#0c0c0c);padding:70px 6%;text-align:center}
   .gift-image-wrap{width:100%;max-width:320px;aspect-ratio:1/1;margin:24px auto 0;border-radius:16px;overflow:hidden;border:2px solid var(--gold);background:#111;display:flex;align-items:center;justify-content:center}.gift-image-wrap.empty{display:none}.gift-image-wrap.empty img{display:none}
-  .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block;touch-action:pan-x}.gift-image-wrap{overscroll-behavior-y:contain}
+  .gift-image-wrap img{width:100%;height:100%;object-fit:cover;display:block;touch-action:pan-x pan-y}.gift-image-wrap{overscroll-behavior-y:auto}
   .gift-stock{color:var(--gold);font-weight:700;font-size:14px;margin:10px 0 14px}
   .gift-limited{color:#e8543a;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:4px 0}
   .gift-offers{max-width:700px;margin:30px auto 0;text-align:left}
@@ -105,11 +105,11 @@
   .gift-offer-block h4{margin:0 0 8px;color:var(--gold);font-size:15px}
   .gift-offer-block p{margin:0;color:var(--muted);font-size:14px;line-height:1.7;white-space:pre-line}
   .gift-disclaimer{max-width:700px;margin:22px auto 0;padding:16px 18px;border-left:3px solid var(--gold);background:rgba(255,255,255,.03);color:var(--muted);font-size:12.5px;line-height:1.7;text-align:left}
-  .gift-disclaimer strong{color:#e8543a;animation:disclaimerFlash 5s ease-out forwards}@keyframes disclaimerFlash{0%,55%{color:#e8543a}100%{color:#fff}}
+  .gift-disclaimer strong{color:#e8543a}
   .gift-offer-block .gift-image-wrap{max-width:100%;aspect-ratio:16/9;margin:0 0 14px}
   .gift-image-poster{max-width:280px;aspect-ratio:auto!important;height:auto!important;margin:0 auto 14px !important;background:#111}
   .gift-image-poster img{object-fit:contain!important;height:auto!important;width:100%!important}
-  .gift-image-row{display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:12px;margin-bottom:14px;overflow-x:auto;overflow-y:hidden;padding:0 4px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;touch-action:pan-x}
+  .gift-image-row{display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;gap:12px;margin-bottom:14px;overflow-x:auto;overflow-y:hidden;padding:0 4px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;touch-action:pan-x pan-y;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
   .gift-image-row .gift-image-wrap{flex:0 0 min(320px, calc(100vw - 96px));margin:0;scroll-snap-align:center}
   .gift-image-row::-webkit-scrollbar{height:5px}.gift-image-row::-webkit-scrollbar-thumb{background:var(--gold);border-radius:999px}
   .gift-extra-text p{margin-top:10px}
@@ -366,6 +366,10 @@ footer>*:not(.hexlayer){position:relative;z-index:2}
 
 
 
+/* hl-fm: lapisan hexagon footer (semua saiz skrin), diletak di bawah tulisan */
+footer>.hexlayer:not(.hl-fm){display:none!important}
+footer>.hexlayer.hl-fm{display:block;position:absolute;left:0;top:auto;bottom:0;width:100%;height:auto;max-width:none}
+@media(min-width:901px){footer{padding-bottom:54vw!important}}
 /* ===== TABLET-MENEGAK & PHONE (<=900px): ikut gambar rujukan (lebar rujukan 823; semua dalam vw) ===== */
 @media(max-width:900px){
   /* HERO */
@@ -405,8 +409,14 @@ footer>*:not(.hexlayer){position:relative;z-index:2}
   /* FEATURED PLANS: lapisan hexagon di tengah, lebar sama */
   .help-section>.hexlayer{left:-20.9vw!important;width:141.8vw!important;max-width:none}
   .about-grid .socials{margin-top:0!important}
+  /* FOOTER: hexagon di bawah (macam muka surat 8 PDF), tidak di belakang tulisan */
+  footer{padding-bottom:62vw!important;overflow:hidden}
+  footer>.hexlayer:not(.hl-fm){display:none!important}
+  footer>.hexlayer.hl-fm{display:block;position:absolute;left:-7.5vw!important;top:auto!important;bottom:0!important;width:115vw!important;max-width:none;height:auto}
 }
 /* ===== END TABLET-MENEGAK & PHONE ===== */
+/* Disclaimer bahagian hadiah sahaja warna merah; disclaimer footer kekal warna asal */
+.gift-disclaimer,.gift-disclaimer strong{color:#e8543a!important}
 /* ===== END DESIGN OVERRIDES ===== */
 
 
@@ -814,6 +824,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
 
 <footer>
   <svg class="hexlayer" viewBox="0 8 1024.5 576" preserveAspectRatio="xMinYMin meet" aria-hidden="true"><polygon points="1040.5,500.4 1114.1,613.4 1053.1,734.6 918.5,742.8 844.9,629.8 905.8,508.6" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,941.25,467.75)"/><polygon points="1027.9,259.6 1101.5,372.6 1040.5,493.8 905.9,501.9 832.3,389.0 893.3,267.8" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,928.67,226.94)"/><polygon points="94.0,374.7 167.6,487.7 106.6,608.8 -28.0,617.0 -101.6,504.0 -40.6,382.8" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,-5.23,342.00)"/><polygon points="307.8,482.9 381.4,595.9 320.4,717.1 185.8,725.2 112.2,612.3 173.2,491.1" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,208.59,450.25)"/><polygon points="543.9,488.7 616.5,567.3 584.8,670.2 480.6,694.3 408.0,615.7 439.7,512.9" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.56961,0.17556,-0.17562,0.56982,462.02,476.24)"/><polygon points="726.0,544.8 798.5,623.4 766.8,726.3 662.6,750.4 590.1,671.8 621.8,569.0" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.56961,0.17556,-0.17562,0.56982,644.06,532.34)"/></svg>
+  <svg class="hexlayer hl-fm" viewBox="0 227 1024.5 549" preserveAspectRatio="xMinYMin meet" aria-hidden="true"><polygon points="1040.5,500.4 1114.1,613.4 1053.1,734.6 918.5,742.8 844.9,629.8 905.8,508.6" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,941.25,467.75)"/><polygon points="1027.9,259.6 1101.5,372.6 1040.5,493.8 905.9,501.9 832.3,389.0 893.3,267.8" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,928.67,226.94)"/><polygon points="94.0,374.7 167.6,487.7 106.6,608.8 -28.0,617.0 -101.6,504.0 -40.6,382.8" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,-5.23,342.00)"/><polygon points="307.8,482.9 381.4,595.9 320.4,717.1 185.8,725.2 112.2,612.3 173.2,491.1" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.67119,0.33788,-0.33800,0.67144,208.59,450.25)"/><polygon points="543.9,488.7 616.5,567.3 584.8,670.2 480.6,694.3 408.0,615.7 439.7,512.9" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.56961,0.17556,-0.17562,0.56982,462.02,476.24)"/><polygon points="726.0,544.8 798.5,623.4 766.8,726.3 662.6,750.4 590.1,671.8 621.8,569.0" fill="none" stroke="url(#hxo)" stroke-width="1.3"/><use href="#hx0" clip-path="url(#hxc)" transform="matrix(0.56961,0.17556,-0.17562,0.56982,644.06,532.34)"/></svg>
   <p><strong id="contactName">Hardy.vii</strong></p>
   <p class="muted" id="contactRole">Wealth Planner &middot; Muqmeen Group &middot; PruBSN Takaful</p>
   <p class="muted" id="contactAddress" style="font-size:13px;max-width:420px;margin:10px auto">No. 3-G, Ground Floor, Jalan Cahaya Suria 1, Taman Cahaya Suria, Sg. Chua, 43000 Kajang, Selangor Darul Ehsan</p>
@@ -1249,7 +1260,7 @@ Alternatively, you are also eligible for the same reward by signing up for Hibah
       if (imageGesture && event.touches.length === 1) {
         const dx = event.touches[0].clientX - imageStartX;
         const dy = event.touches[0].clientY - imageStartY;
-        if (Math.abs(dy) > Math.abs(dx)) event.preventDefault();
+        // Jangan preventDefault: biar jari yang bermula di atas gambar masih boleh skrol halaman ke atas/bawah.
         return;
       }
       if (!pulling || refreshing || window.scrollY > 0) return;
