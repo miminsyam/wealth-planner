@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StockCheck Outlet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Outfit:wght@400;500;600;700&family=Great+Vibes&family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D1712;
+    --card:#FFFFFF;
+    --brown:#A57C5B;
+    --brown-dark:#7E5C40;
+    --red:#E0332B;
+    --red-dark:#A81F19;
+    --green:#2F7A5E;
+    --green-dark:#1E5540;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Outfit',sans-serif;
+    background:linear-gradient(170deg, #C9A98B 0%, #B08968 50%, #96714F 100%);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;justify-content:center;
+    padding:36px 16px 52px;
+  }
+  .col{width:100%;max-width:420px;display:flex;flex-direction:column;gap:22px}
+
+  /* ---- tag card ---- */
+  .tag{
+    background:var(--card);
+    border-radius:18px;
+    padding:30px 24px 26px;
+    position:relative;
+    box-shadow:0 14px 34px rgba(43,28,15,.35), inset 0 1px 0 rgba(255,255,255,.7);
+    animation:drop .5s ease both;
+  }
+  .tag::before{ /* lubang tag */
+    content:"";
+    position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:14px;height:14px;border-radius:50%;
+    background:#96714F;
+    box-shadow:inset 0 1px 3px rgba(0,0,0,.5), 0 0 0 3px rgba(29,23,18,.2);
+  }
+  .tag:nth-child(2){animation-delay:.08s}
+  .tag:nth-child(3){animation-delay:.16s}
+  @keyframes drop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){.tag{animation:none}}
+
+  .eyebrow{
+    font-family:'Outfit',sans-serif;font-weight:600;
+    font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+    text-align:center;color:var(--brown);margin-top:12px;
+  }
+  h1,h2{
+    font-family:'Fraunces',serif;
+    text-align:center;line-height:1.12;
+    margin:8px 0 4px;letter-spacing:.01em;
+  }
+  h1{font-size:30px;font-weight:700}
+  .title-link{
+    display:block;text-decoration:none;color:inherit;
+    border-radius:10px;padding:4px 8px;margin:0 -8px;
+    transition:background .12s ease, transform .12s ease;
+  }
+  .title-link:hover{background:rgba(165,124,91,.12);transform:translateY(-1px)}
+  .title-link:focus-visible{outline:3px solid var(--brown);outline-offset:3px}
+  .title-link h1::after{
+    content:" \2197";
+    font-family:'Outfit',sans-serif;font-size:16px;
+    color:var(--brown);vertical-align:super;
+  }
+  h2{font-size:24px;font-weight:700;font-style:italic}
+  .perf{ /* garis koyak */
+    border:none;border-top:2px dashed #E4D9CC;margin:18px 0;
+  }
+  .qr{
+    display:block;width:200px;height:200px;margin:0 auto;
+    border:2px solid var(--ink);border-radius:12px;padding:10px;background:#fff;
+    box-shadow:0 4px 14px rgba(29,23,18,.15);
+  }
+  .qr canvas,.qr img{display:block;width:100%!important;height:100%!important}
+  .btn{
+    display:block;text-align:center;text-decoration:none;
+    font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;
+    letter-spacing:.08em;text-transform:uppercase;
+    color:#fff;padding:15px 16px;border-radius:12px;margin-top:18px;
+    transition:transform .12s ease, filter .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+  /* Home: gabungan tema 2 outlet — atas putih (Pejam Mata), bawah hitam (Red Card) */
+  .home{
+    background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 55%,#121212 55%,#121212 100%);
+  }
+  .home .qr{
+    border:3px solid transparent;
+    background:linear-gradient(#fff,#fff) padding-box,
+               linear-gradient(135deg,var(--brown),var(--red)) border-box;
+  }
+  .home .btn{background:#fff;color:#121212;border:1px solid rgba(255,255,255,.6)}
+
+  /* Pejam Mata: soft brown + hitam + putih */
+  .pejam{
+    background:linear-gradient(rgba(255,255,255,.94), rgba(255,255,255,.94)), #F5EDE4;
+  }
+  .pejam .btn{background:linear-gradient(135deg,var(--brown),var(--brown-dark))}
+  .pejam h2{
+    font-family:'Great Vibes',cursive;font-style:normal;font-weight:400;
+    font-size:40px;color:var(--ink);letter-spacing:.02em;
+  }
+  .pejam .qr{border-color:var(--brown)}
+
+  /* Redcard: hitam + merah + putih */
+  .redcard{background:#121212;box-shadow:0 14px 34px rgba(0,0,0,.5)}
+  .redcard h2{
+    font-family:'Amatic SC',cursive;font-style:normal;font-weight:700;
+    font-size:42px;color:#fff;text-transform:uppercase;letter-spacing:.28em;
+    margin-right:-.28em;
+  }
+  .redcard h2 .red-a{color:var(--red)}
+  .redcard .eyebrow{color:var(--red)}
+  .redcard .perf{border-top-color:#333}
+  .redcard .num{color:#666}
+  .redcard .qr{border-color:var(--red)}
+  .redcard .btn{background:linear-gradient(135deg,var(--red),var(--red-dark))}
+
+  /* Stocktake: PUTIH berjalur macam kertas + aksen hijau */
+  .stok{
+    background:repeating-linear-gradient(180deg,#ffffff 0 27px,#c9d7e8 27px 29px);
+  }
+  .stok h2{
+    font-style:normal;font-weight:700;font-size:25px;color:var(--ink);
+  }
+  .stok .eyebrow{color:var(--green)}
+  .stok .perf{border-top-color:#dfe6ef}
+  .stok .qr{border-color:var(--green)}
+  .stok .btn{background:linear-gradient(135deg,var(--green),var(--green-dark))}
+
+  /* Mileage Report: soft orange + dark brown */
+  .mileage{background:linear-gradient(180deg,#FFF0DC 0%,#F9D5AE 100%)}
+  .mileage h2{font-family:'Amatic SC',cursive;font-style:normal;font-size:38px;color:var(--brown-dark);text-transform:uppercase;letter-spacing:.08em}
+  .mileage .eyebrow{color:var(--brown-dark)}
+  .mileage .perf{border-top-color:rgba(126,92,64,.4)}
+  .mileage .qr{border-color:var(--brown-dark)}
+  .mileage .btn{background:linear-gradient(135deg,#B87943,var(--brown-dark))}
+
+  /* Central Kitchen: warm paper */
+  .central{background:linear-gradient(180deg,#FFF4A8 0%,#FFD35F 48%,#F6A15B 100%)}
+  .central h2{font-style:normal;font-size:29px;color:var(--brown-dark);text-transform:uppercase;letter-spacing:.06em}
+  .central .eyebrow{color:var(--brown-dark)}
+  .central .perf{border-top-color:rgba(126,92,64,.4)}
+  .central .qr{border-color:var(--brown-dark)}
+  .central .btn{background:linear-gradient(135deg,#F59E0B,#C96B32)}
+
+  .num{
+    position:absolute;top:22px;right:20px;
+    font-family:'Outfit',sans-serif;font-weight:600;
+    font-size:10px;letter-spacing:.16em;color:#C0B5A4;
+  }
+  footer{
+    text-align:center;font-family:'Outfit',sans-serif;font-weight:500;
+    font-size:11px;color:rgba(29,23,18,.65);letter-spacing:.22em;
+    text-transform:uppercase;margin-top:6px;
+  }
+  /* pilihan tersembunyi sehingga butang home ditekan */
+  .options{display:none;flex-direction:column;gap:22px}
+  .options.show{display:flex}
+  .btn-reveal{
+    display:block;width:100%;border:none;cursor:pointer;
+    text-align:center;
+    font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;
+    letter-spacing:.08em;text-transform:uppercase;
+    color:#fff;background:linear-gradient(135deg,var(--brown) 0%,var(--brown-dark) 45%,var(--red-dark) 100%);
+    padding:15px 16px;border-radius:12px;margin-top:14px;
+    transition:transform .12s ease, filter .12s ease;
+  }
+  .btn-reveal:hover{transform:translateY(-2px);filter:brightness(1.1)}
+  .btn-reveal:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+  .btn-reveal .arrow{display:inline-block;transition:transform .2s ease}
+  .btn-reveal.open .arrow{transform:rotate(180deg)}
+</style>
+</head>
+<body>
+<div class="col">
+
+  <div class="tag home">
+    <p class="eyebrow">Home &middot; Folder Utama</p>
+    <a class="title-link" href="https://drive.google.com/drive/folders/15qpOarEx1useNKECwXbbkBg6xW2CkNte" target="_blank" rel="noopener"><h1>StockCheck Outlet</h1></a>
+    <hr class="perf">
+    <div class="qr" data-qr="https://drive.google.com/drive/folders/15qpOarEx1useNKECwXbbkBg6xW2CkNte" aria-label="QR StockCheck Outlet" role="img"></div>
+    <button class="btn-reveal" id="revealBtn" onclick="toggleOptions()">Pilih Outlet <span class="arrow">&#9662;</span></button>
+  </div>
+
+  <div class="options" id="options">
+  <div class="tag pejam">
+    <span class="num">PILIHAN 1</span>
+    <p class="eyebrow">Outlet</p>
+    <h2>Pejam Mata Cafe</h2>
+    <hr class="perf">
+    <div class="qr" data-qr="https://drive.google.com/drive/folders/1Jc03wmCCGwqS5JeldeImk0WGkNw7pbWK" aria-label="QR Pejam Mata Cafe" role="img"></div>
+    <a class="btn" href="https://drive.google.com/drive/folders/1Jc03wmCCGwqS5JeldeImk0WGkNw7pbWK" target="_blank" rel="noopener">Pejam Mata Cafe</a>
+  </div>
+
+  <div class="tag redcard">
+    <span class="num">PILIHAN 2</span>
+    <p class="eyebrow">Outlet</p>
+    <h2>Red C<span class="red-a">a</span>rd Cafe</h2>
+    <hr class="perf">
+    <div class="qr" data-qr="https://drive.google.com/drive/folders/1TKxxdhiWDI5_oXQKb8vpE2M-e2h5mXNe" aria-label="QR Redcard Cafe" role="img"></div>
+    <a class="btn" href="https://drive.google.com/drive/folders/1TKxxdhiWDI5_oXQKb8vpE2M-e2h5mXNe" target="_blank" rel="noopener">Redcard Cafe</a>
+  </div>
+
+
+  <div class="tag central">
+    <span class="num">PILIHAN 3</span>
+    <p class="eyebrow">Warehouse</p>
+    <h2>Central Kitchen</h2>
+    <hr class="perf">
+    <div class="qr" data-qr="https://drive.google.com/drive/folders/1Qah00bJcgASEIeGfWzdrTs4GHR-5zU0Q" aria-label="QR Central Kitchen" role="img"></div>
+    <a class="btn" href="https://drive.google.com/drive/folders/1Qah00bJcgASEIeGfWzdrTs4GHR-5zU0Q" target="_blank" rel="noopener">Central Kitchen</a>
+  </div>
+
+  <div class="tag stok">
+    <span class="num">PILIHAN 4</span>
+    <p class="eyebrow">Stocktake</p>
+    <h2>Inventory Outlet</h2>
+    <hr class="perf">
+    <div class="qr" data-qr="https://drive.google.com/drive/folders/1Yd-huvVEizxQ4S4fgiLq7L_Ic4MiDuuP" aria-label="QR Inventory Outlet" role="img"></div>
+    <a class="btn" href="https://drive.google.com/drive/folders/1Yd-huvVEizxQ4S4fgiLq7L_Ic4MiDuuP" target="_blank" rel="noopener">Stocktake</a>
+  </div>
+
+  <div class="tag mileage">
+    <span class="num">PILIHAN 5</span>
+    <p class="eyebrow">Logistic</p>
+    <h2>Report</h2>
+    <hr class="perf">
+    <div class="qr" data-qr="https://docs.google.com/spreadsheets/d/10mqlNeEORDl06hlwBBfPlEdwEY0lmxDVwWH2bteymU4/edit?usp=drive_link" aria-label="QR Maleage Report" role="img"></div>
+    <a class="btn" href="https://docs.google.com/spreadsheets/d/10mqlNeEORDl06hlwBBfPlEdwEY0lmxDVwWH2bteymU4/edit?usp=drive_link" target="_self">Maleage Report</a>
+  </div>
+  </div>
+
+  <footer>StockCheck &middot; Scan atau Tekan</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+  function toggleOptions(){
+    var opts = document.getElementById('options');
+    var btn = document.getElementById('revealBtn');
+    var open = opts.classList.toggle('show');
+    btn.classList.toggle('open', open);
+    if(open){ opts.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+  // Jana QR untuk setiap kad
+  document.querySelectorAll('.qr[data-qr]').forEach(function(el){
+    new QRCode(el, {
+      text: el.getAttribute('data-qr'),
+      width: 180,
+      height: 180,
+      colorDark: '#1D1712',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  });
+</script>
+</body>
+</html>
