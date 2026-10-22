@@ -16,8 +16,6 @@ type OutletTagProps = {
   buttonLabel: string
   eyebrowClassName?: string
   perfClassName?: string
-  notice?: string
-  onOpenNotice?: (notice: string, href: string) => void
 }
 
 export function OutletTag({
@@ -34,8 +32,6 @@ export function OutletTag({
   buttonLabel,
   eyebrowClassName,
   perfClassName,
-  notice,
-  onOpenNotice,
 }: OutletTagProps) {
   const heading = (
     <h2
@@ -101,14 +97,6 @@ export function OutletTag({
         href={href}
         target={href.includes('docs.google.com/spreadsheets') ? '_self' : '_blank'}
         rel={href.includes('docs.google.com/spreadsheets') ? undefined : 'noopener noreferrer'}
-        onClick={
-          notice && onOpenNotice
-            ? (event) => {
-                event.preventDefault()
-                onOpenNotice(notice, href)
-              }
-            : undefined
-        }
         className={cn(
           'mt-4 block rounded-xl px-4 py-4 text-center font-sans text-[15px] font-semibold uppercase tracking-[0.08em] text-white transition-transform hover:-translate-y-0.5 hover:brightness-110',
           buttonClassName,

@@ -15,7 +15,6 @@ const CENTRAL_KITCHEN_URL = 'https://drive.google.com/drive/folders/1Qah00bJcgAS
 
 export function OutletBoard() {
   const [open, setOpen] = useState(false)
-  const [notice, setNotice] = useState<{ title: string; href: string } | null>(null)
   const optionsRef = useRef<HTMLDivElement>(null)
 
   function toggle() {
@@ -86,8 +85,6 @@ export function OutletBoard() {
             qrColor="#a57c5b"
             buttonLabel="Pejam Mata Cafe"
             buttonClassName="bg-[linear-gradient(135deg,var(--color-brand-brown),var(--color-brand-brown-dark))]"
-            notice="Pejam Mata Cafe"
-            onOpenNotice={(title, href) => setNotice({ title, href })}
           />
 
           <OutletTag
@@ -109,8 +106,6 @@ export function OutletBoard() {
             qrColor="#e0332b"
             buttonLabel="Redcard Cafe"
             buttonClassName="bg-[linear-gradient(135deg,var(--color-brand-red),var(--color-brand-red-dark))]"
-            notice="Redcard Cafe"
-            onOpenNotice={(title, href) => setNotice({ title, href })}
           />
 
           <OutletTag
@@ -157,54 +152,6 @@ export function OutletBoard() {
             buttonLabel="Maleage Report"
             buttonClassName="bg-[linear-gradient(135deg,#b87943,#7e5c40)]"
           />
-        </div>
-      )}
-
-      {notice && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="outlet-notice-title"
-          onClick={() => setNotice(null)}
-        >
-          <div
-            className="w-full max-w-[380px] rounded-3xl bg-white p-5 text-ink shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <h2 id="outlet-notice-title" className="font-serif text-[22px] font-bold not-italic">
-                {notice.title}
-              </h2>
-              <button
-                type="button"
-                onClick={() => setNotice(null)}
-                className="px-1 text-2xl leading-none text-ink/45"
-                aria-label="Tutup"
-              >
-                {'\u00d7'}
-              </button>
-            </div>
-            <div className="mt-3 rounded-2xl border-2 border-amber-400 bg-amber-100 p-3 text-sm font-semibold leading-relaxed">
-              {'\u26a0\ufe0f'} Sebelum buka, pastikan anda sudah muat turun aplikasi{' '}
-              <mark className="rounded bg-yellow-300 px-1">Google Drive</mark> dan{' '}
-              <mark className="rounded bg-yellow-300 px-1">Google Sheets</mark>.
-            </div>
-            <ol className="mt-3 space-y-1 text-sm leading-relaxed text-ink/80">
-              <li><b>1.</b> Cari folder ikut <b>bulan & tahun</b>.</li>
-              <li><b>2.</b> Pilih sheet ikut <b>tarikh minggu</b>.</li>
-              <li><b>3.</b> Pilih tab ikut <b>hari & department</b>.</li>
-            </ol>
-            <a
-              href={notice.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setNotice(null)}
-              className="mt-4 block rounded-xl bg-brand-brown px-4 py-3 text-center text-sm font-semibold uppercase tracking-[0.08em] text-white"
-            >
-              Faham, Buka
-            </a>
-          </div>
         </div>
       )}
 
