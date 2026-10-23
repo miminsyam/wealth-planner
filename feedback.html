@@ -10,14 +10,13 @@
 <style>
   :root{--gold:#d3af37;--orange:#fd9800;--orange2:#e58a02;--navy:#0e0b16;--muted:#c9c9c9;--field:#111;--field-border:rgba(211,175,55,.4);--err:#e8543a}
   *{box-sizing:border-box}
-  html{background:#000;overflow-x:hidden}
-  body{margin:0;min-height:100vh;background:radial-gradient(60% 50% at 25% 15%,#1d180a 0%,rgba(29,24,10,0) 70%),#000;color:#fff;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;line-height:1.6;overflow-x:hidden;max-width:100%;position:relative}
+  html{background:#000}
+  body{margin:0;min-height:100vh;background:radial-gradient(60% 50% at 25% 15%,#1d180a 0%,rgba(29,24,10,0) 70%),#000;color:#fff;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;line-height:1.6;position:relative}
   a{color:inherit}
 
   /* hexagon hiasan: kuning-oren, sama gaya dengan laman utama */
-  .hx{position:absolute;aspect-ratio:.866;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--orange);pointer-events:none;z-index:0}
-  .hx::before{content:"";position:absolute;inset:1.2%;background:#000;clip-path:inherit}
-  .hx::after{content:"";position:absolute;inset:6.5%;background:linear-gradient(90deg,#a35e00,#14102a);clip-path:inherit}
+  .hxwrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .hx{position:absolute;aspect-ratio:.866;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 115.47'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%23a35e00'/><stop offset='1' stop-color='%2314102a'/></linearGradient></defs><polygon points='50,0 100,28.87 100,86.6 50,115.47 0,86.6 0,28.87' fill='%23000' stroke='%23fd9800' stroke-width='1.6'/><polygon points='50,6.5 94.4,32.1 94.4,83.4 50,109 5.6,83.4 5.6,32.1' fill='url(%23g)'/></svg>") center/100% 100% no-repeat;pointer-events:none;z-index:0}
   .hx1{width:min(34vw,340px);right:-9vw;top:-4vw}
   .hx2{width:min(26vw,260px);left:-12vw;bottom:8vh}
   .hx3{width:min(24vw,240px);right:-8vw;bottom:-6vw}
@@ -34,7 +33,7 @@
   h1{font-size:clamp(34px,8vw,52px);line-height:1.1;margin:10px 0 10px;text-align:center;color:var(--gold);font-weight:700}
   .lead{color:var(--muted);text-align:center;font-size:15px;margin:0 auto 30px;max-width:460px}
 
-  .card{background:rgba(255,255,255,.04);border:1px solid rgba(211,175,55,.28);border-radius:18px;padding:28px 24px;backdrop-filter:blur(2px)}
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(211,175,55,.28);border-radius:18px;padding:28px 24px}
   .field{margin-bottom:20px}
   .field label,.field legend{display:block;font-weight:600;font-size:14px;margin-bottom:8px;padding:0}
   .req{color:var(--gold)}
@@ -79,7 +78,7 @@
 </style>
 </head>
 <body>
-<i class="hx hx1" aria-hidden="true"></i><i class="hx hx2" aria-hidden="true"></i><i class="hx hx3" aria-hidden="true"></i>
+<div class="hxwrap" aria-hidden="true"><i class="hx hx1"></i><i class="hx hx2"></i><i class="hx hx3"></i></div>
 
 <header>
   <a class="brand" href="index.html">WEALTH PLANNER<small>Hardy.vii</small></a>
